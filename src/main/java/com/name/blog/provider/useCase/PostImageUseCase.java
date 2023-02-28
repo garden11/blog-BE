@@ -9,7 +9,4 @@ import java.util.List;
 public interface PostImageUseCase {
     @Transactional
     PostImageDTO insertPostImage(PostImageRequestDTO postImageRequestDTO);
-
-    @Transactional
-    void updatePostImagesByPostIdAndUriList(Long postId, List<String> uriList);
 }

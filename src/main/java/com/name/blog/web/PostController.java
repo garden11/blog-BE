@@ -44,8 +44,8 @@ public class PostController {
 	
 	@DeleteMapping("/api/v1/post/{id}")
 	@Auth(roles = {Role.USER})
-	public PostDTO removePost(@PathVariable("id") Long id) {
-		return postService.deletePostById(id);
+	public void deletePost(@PathVariable("id") Long id) {
+		postService.deletePostById(id);
 	}
 	
 	@GetMapping("/api/v1/user/{username}/post/{id}/check-post")

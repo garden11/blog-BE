@@ -14,6 +14,10 @@ public interface MailProcessRepository extends JpaRepository<MailProcess, Long> 
     Optional<MailProcess> findByProcessToken(String processToken);
 
     @Modifying
+    @Query(value="UPDATE mail_process SET delete_yn = 'Y' WHERE id = :id", nativeQuery=true)
+    int updateProcessYById(@Param("id") Long id);
+
+    @Modifying
     @Query(value="UPDATE mail_process SET process_yn = 'Y' WHERE email = :email", nativeQuery=true)
-    int updateAllProcessByEmail(@Param("email") String email);
+    int updateAllProcessYByEmail(@Param("email") String email);
 }

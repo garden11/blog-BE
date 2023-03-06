@@ -46,8 +46,4 @@ public class MailProcess {
         this.email = email;
         this.processToken = processToken;
     }
-
-    public void process() {
-        this.processYN = "Y";
-    }
 }

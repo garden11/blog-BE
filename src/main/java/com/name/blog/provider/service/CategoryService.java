@@ -53,11 +53,9 @@ public class CategoryService implements CategoryUseCase {
 
 	@Override
 	@Transactional
-	public CategoryDTO deleteCategory(Long id){
+	public void deleteCategory(Long id){
 		Category category = categoryRepository.findById(id).get();
-		category.deleteCategory();
-				
-		return CategoryDTO.of(categoryRepository.save(category));
+		categoryRepository.updateDeleteYById(category.getId());
 	}
 
 	@Override

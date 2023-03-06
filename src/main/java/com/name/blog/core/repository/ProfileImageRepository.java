@@ -17,7 +17,7 @@ public interface ProfileImageRepository extends JpaRepository<ProfileImage, Long
 
 	@Modifying
 	@Query(value="UPDATE profile_image SET use_yn = 'N' WHERE id IN (:idList)", nativeQuery=true)
-	int updateAllNotUseByIdIn(@Param("idList") List<Long> idList);
+	int updateAllUseNByIdIn(@Param("idList") List<Long> idList);
 
 	@Query(value="SELECT id, name FROM profile_image WHERE expires_at IS NOT NULL AND expires_at < UNIX_TIMESTAMP() AND id >= :id", nativeQuery=true)
 	List<Object[]> selectIdsAndNamesExpired(@Param("id") Long id);

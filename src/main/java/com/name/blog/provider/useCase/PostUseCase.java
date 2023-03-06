@@ -17,7 +17,7 @@ public interface PostUseCase {
     PostDTO updatePostById(Long id, PostRequestDTO postRequestDTO);
 
     @Transactional
-    PostDTO deletePostById(Long id);
+    void deletePostById(Long id);
 
     @Transactional
     boolean isValidPost(String username, Long id);

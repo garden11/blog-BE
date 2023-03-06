@@ -49,8 +49,8 @@ public class PostService implements PostUseCase {
 	public PostDTO updatePostById(Long id, PostRequestDTO postRequestDTO) {
 		Post post = postRepository.findById(id).orElseThrow();
 
-		postImageRepository.updateAllNotUseByPostId(id);
-		postImageRepository.updateAllUseByPostIdAndUriIn(id, postRequestDTO.getImageUriList());
+		postImageRepository.updateAllUseNByPostId(id);
+		postImageRepository.updateAllUseYByPostIdAndUriIn(id, postRequestDTO.getImageUriList());
 		
 		post.updatePost(postRequestDTO);
 
@@ -63,14 +63,9 @@ public class PostService implements PostUseCase {
 
 	@Override
 	@Transactional
-	public PostDTO deletePostById(Long id) {
-
-
+	public void deletePostById(Long id) {
 		Post post = postRepository.findById(id).orElseThrow();
-
-		post.deletePost();
-		
-		return PostDTO.of(postRepository.save(post));
+		postRepository.updateDeleteYById(post.getId());
 	}
 
 	@Override

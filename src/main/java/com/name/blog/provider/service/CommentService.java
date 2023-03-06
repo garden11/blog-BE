@@ -26,11 +26,8 @@ public class CommentService implements CommentUseCase {
 
 	@Override
 	@Transactional
-	public CommentDTO deleteCommentById(Long id) {
+	public void deleteCommentById(Long id) {
 		Comment comment = commentRepository.findById(id).orElseThrow();
-		
-		comment.deleteComment();
-		
-		return CommentDTO.of(commentRepository.save(comment));
+		commentRepository.updateDeleteYById(comment.getId());
 	}
 }

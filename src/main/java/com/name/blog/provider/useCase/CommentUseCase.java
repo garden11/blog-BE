@@ -11,5 +11,5 @@ public interface CommentUseCase {
     CommentDTO insertComment(@RequestBody CommentRequestDTO commentRequestDTO);
 
     @Transactional
-    CommentDTO deleteCommentById(Long id);
+    void deleteCommentById(Long id);
 }

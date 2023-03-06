@@ -84,10 +84,6 @@ public class Post {
         if (postRequestDTO.getUpdatedAt() != null) { this.updatedAt = Long.valueOf(postRequestDTO.getUpdatedAt());}
     }
 
-    public void deletePost() {
-        this.deleteYN = "Y";
-    }
-
     public void registerPost() {
         this.registerYN = "Y";
     }

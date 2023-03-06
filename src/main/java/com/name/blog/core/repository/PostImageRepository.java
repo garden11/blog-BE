@@ -14,11 +14,11 @@ import java.util.List;
 public interface PostImageRepository extends JpaRepository<PostImage, Long> {
     @Modifying
     @Query(value="UPDATE post_image SET use_yn = 'N' WHERE post_id = :postId", nativeQuery=true)
-    int updateAllNotUseByPostId(@Param("postId")Long postId);
+    int updateAllUseNByPostId(@Param("postId")Long postId);
 
     @Modifying
     @Query(value="UPDATE post_image SET use_yn = 'Y' WHERE post_id = :postId AND uri IN (:uriList)", nativeQuery=true)
-    int updateAllUseByPostIdAndUriIn(@Param("postId")Long postId, @Param("uriList") List<String> uriList);
+    int updateAllUseYByPostIdAndUriIn(@Param("postId")Long postId, @Param("uriList") List<String> uriList);
 
     @Query(value="SELECT id, name FROM post_image WHERE expires_at IS NOT NULL AND expires_at < UNIX_TIMESTAMP() AND id >= :id", nativeQuery=true)
     List<Object[]> selectIdsAndNamesExpired(@Param("id") Long id);

@@ -4,6 +4,8 @@ import com.name.blog.core.entity.Post;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class PostRequestDTO {
 	private String username;
@@ -14,6 +16,7 @@ public class PostRequestDTO {
 	private String createdAt;
 	private String registeredAt;
 	private String updatedAt;
+	private List<String> imageUriList;
 	
 	public Post toEntity() {
 		return Post.builder()

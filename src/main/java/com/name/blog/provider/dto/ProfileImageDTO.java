@@ -17,9 +17,9 @@ public class ProfileImageDTO {
 
 	public static ProfileImageDTO of(ProfileImage profileImage) {
 		 return ProfileImageDTO.builder()
-				 .id(responseUtil.convertString(profileImage.getId()))
-				 .uri(profileImage.getUri())
-				 .name(profileImage.getName())
+				 .id(responseUtil.handleValue(profileImage.getId()))
+				 .uri(responseUtil.handleValue(profileImage.getUri()))
+				 .name(responseUtil.handleValue(profileImage.getName()))
 				 .build();
 	}
 }

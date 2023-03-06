@@ -61,11 +61,4 @@ public class PostImageService implements PostImageUseCase {
 
 		return postImageDTO;
 	}
-
-	@Override
-	@Transactional
-	public void updatePostImagesByPostIdAndUriList(Long postId, List<String> uriList) {
-		postImageRepository.updateAllNotUseByPostId(postId);
-		postImageRepository.updateAllUseByPostIdAndUriIn(postId, uriList);
-	}
 }

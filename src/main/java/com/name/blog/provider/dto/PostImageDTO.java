@@ -17,9 +17,9 @@ public class PostImageDTO {
 
 	public static PostImageDTO of(PostImage postImage) {
 		 return PostImageDTO.builder()
-				 .id(responseUtil.convertString(postImage.getId()))
-				 .uri(postImage.getUri())
-				 .name(postImage.getName())
+				 .id(responseUtil.handleValue(postImage.getId()))
+				 .uri(responseUtil.handleValue(postImage.getUri()))
+				 .name(responseUtil.handleValue(postImage.getName()))
 				 .build();
 	}
 }

@@ -44,8 +44,8 @@ public class CategoryController {
 	
 	@DeleteMapping("/api/v1/category/{id}")
 	@Auth(roles = {Role.USER})
-	public CategoryDTO removeCategory(@PathVariable("id") Long id){
-		return categoryService.deleteCategory(id);
+	public void removeCategory(@PathVariable("id") Long id){
+		categoryService.deleteCategory(id);
 	}
 	
 	@GetMapping("/api/v1/user/{username}/category/{id}/check-category")

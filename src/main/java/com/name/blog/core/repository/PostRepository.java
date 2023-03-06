@@ -11,4 +11,8 @@ import com.name.blog.core.entity.Post;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
 	boolean existsByUsernameAndId(String username, Long id);
+
+	@Modifying
+	@Query(value="UPDATE post SET delete_yn = 'Y' WHERE id = :id", nativeQuery=true)
+	int updateDeleteYById(@Param("id") Long id);
 }	

@@ -29,7 +29,7 @@ public class CommentController {
 	
 	@DeleteMapping("/api/v1/comment/{id}")
 	@Auth(roles = {Role.USER})
-	public CommentDTO removeComment(@PathVariable("id") Long id) {
-		return commentService.deleteCommentById(id);
+	public void removeComment(@PathVariable("id") Long id) {
+		commentService.deleteCommentById(id);
 	}
 }

@@ -2,6 +2,7 @@ package com.name.blog.provider.service;
 
 import javax.transaction.Transactional;
 
+import com.name.blog.core.repository.PostImageRepository;
 import com.name.blog.provider.useCase.PostUseCase;
 import com.name.blog.util.DateUtil;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PostService implements PostUseCase {
 	private final PostRepository postRepository;
+	private final PostImageRepository postImageRepository;
 
 	@Override
 	@Transactional
@@ -46,6 +48,9 @@ public class PostService implements PostUseCase {
 	@Transactional
 	public PostDTO updatePostById(Long id, PostRequestDTO postRequestDTO) {
 		Post post = postRepository.findById(id).orElseThrow();
+
+		postImageRepository.updateAllUseNByPostId(id);
+		postImageRepository.updateAllUseYByPostIdAndUriIn(id, postRequestDTO.getImageUriList());
 		
 		post.updatePost(postRequestDTO);
 
@@ -58,14 +63,9 @@ public class PostService implements PostUseCase {
 
 	@Override
 	@Transactional
-	public PostDTO deletePostById(Long id) {
-
-
+	public void deletePostById(Long id) {
 		Post post = postRepository.findById(id).orElseThrow();
-
-		post.deletePost();
-		
-		return PostDTO.of(postRepository.save(post));
+		postRepository.updateDeleteYById(post.getId());
 	}
 
 	@Override

@@ -59,8 +59,4 @@ public class Category {
     public void updateCategory(String name) {
     	this.name = name;
     }
-	
-    public void deleteCategory() {
-        this.deleteYN = "Y";
-    }
 }

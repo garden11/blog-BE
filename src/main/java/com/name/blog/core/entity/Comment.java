@@ -64,9 +64,4 @@ public class Comment {
         this.content = content;
     	this.registeredAt = registeredAt;
     }
-	
-    public void deleteComment() {
-    	this.deleteYN="Y";
-    }
-
 }

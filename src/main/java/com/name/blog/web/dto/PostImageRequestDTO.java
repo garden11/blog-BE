@@ -10,5 +10,4 @@ import java.util.List;
 public class PostImageRequestDTO {
 	private MultipartFile image;
 	private Long postId;
-	private List<String> uriList;
 }

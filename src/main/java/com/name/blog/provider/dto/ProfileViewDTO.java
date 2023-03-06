@@ -18,10 +18,10 @@ public class ProfileViewDTO {
 
     public static ProfileViewDTO of(ProfileView profileView) {
         return ProfileViewDTO.builder()
-                .id(responseUtil.convertString(profileView.getId()))
-                .username(profileView.getUsername())
-                .profileImageId(responseUtil.convertString(profileView.getProfileImageId()))
-                .profileImageUri(profileView.getProfileImageUri())
+                .id(responseUtil.handleValue(profileView.getId()))
+                .username(responseUtil.handleValue(profileView.getUsername()))
+                .profileImageId(responseUtil.handleValue(profileView.getProfileImageId()))
+                .profileImageUri(responseUtil.handleValue(profileView.getProfileImageUri()))
                 .build();
     }
 }

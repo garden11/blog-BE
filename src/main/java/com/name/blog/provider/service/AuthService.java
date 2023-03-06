@@ -151,9 +151,7 @@ public class AuthService implements AuthUseCase {
             }
 
             User user = optionalUser.get();
-            user.deleteUser();
-
-            userRepository.save(user);
+            userRepository.updateDeleteYById(user.getId());
         } catch(Exception error) {
             error.printStackTrace();
 
@@ -219,8 +217,7 @@ public class AuthService implements AuthUseCase {
             user.updatePassword(encoder.encode(resetPasswordRequestDTO.getNewPassword()));
             userRepository.save(user);
 
-            mailProcess.process();
-            mailProcessRepository.save(mailProcess);
+            mailProcessRepository.updateProcessYById(mailProcess.getId());
         } catch (Exception error) {
             error.printStackTrace();
 
@@ -234,7 +231,7 @@ public class AuthService implements AuthUseCase {
         try {
             ProcessToken processToken = processTokenProvider.convertToToken(emailRequestDTO.getProcessToken());
 
-            mailProcessRepository.updateAllProcessByEmail(emailRequestDTO.getTo());
+            mailProcessRepository.updateAllProcessYByEmail(emailRequestDTO.getTo());
 
             MailProcess mailProcess = MailProcess.builder()
                     .email(emailRequestDTO.getTo())

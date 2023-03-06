@@ -23,15 +23,15 @@ public class PostDTO {
 	
     public static PostDTO of(Post post) {
         return PostDTO.builder()
-                .id(responseUtil.convertString(post.getId()))
-                .categoryId(responseUtil.convertString(post.getCategoryId()))
-                .username(post.getUsername())
-                .title(post.getTitle())
-                .content(post.getContent())
-				.createdAt(responseUtil.convertString(post.getCreatedAt()))
-				.registeredAt(responseUtil.convertString(post.getRegisteredAt()))
-				.updatedAt(responseUtil.convertString(post.getUpdatedAt()))
-				.registerYN(post.getRegisterYN())
+                .id(responseUtil.handleValue(post.getId()))
+                .categoryId(responseUtil.handleValue(post.getCategoryId()))
+                .username(responseUtil.handleValue(post.getUsername()))
+                .title(responseUtil.handleValue(post.getTitle()))
+                .content(responseUtil.handleValue(post.getContent()))
+				.createdAt(responseUtil.handleValue(post.getCreatedAt()))
+				.registeredAt(responseUtil.handleValue(post.getRegisteredAt()))
+				.updatedAt(responseUtil.handleValue(post.getUpdatedAt()))
+				.registerYN(responseUtil.handleValue(post.getRegisterYN()))
                 .build();
     }
 }

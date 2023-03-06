@@ -22,14 +22,14 @@ public class CommentViewDTO {
 
 	public static CommentViewDTO of(CommentView commentView) {
 		 return CommentViewDTO.builder()
-				 .id(responseUtil.convertString(commentView.getId()))
-				 .postId(responseUtil.convertString(commentView.getPostId()))
-				 .username(commentView.getUsername())
-				 .content(commentView.getContent())
-				 .registeredAt(responseUtil.convertString(commentView.getRegisteredAt()))
-				 .profileId(responseUtil.convertString(commentView.getProfileId()))
-				 .profileImageId(responseUtil.convertString(commentView.getProfileImageId()))
-				 .profileImageUri(commentView.getProfileImageUri())
+				 .id(responseUtil.handleValue(commentView.getId()))
+				 .postId(responseUtil.handleValue(commentView.getPostId()))
+				 .username(responseUtil.handleValue(commentView.getUsername()))
+				 .content(responseUtil.handleValue(commentView.getContent()))
+				 .registeredAt(responseUtil.handleValue(commentView.getRegisteredAt()))
+				 .profileId(responseUtil.handleValue(commentView.getProfileId()))
+				 .profileImageId(responseUtil.handleValue(commentView.getProfileImageId()))
+				 .profileImageUri(responseUtil.handleValue(commentView.getProfileImageUri()))
 				 .build();
 	}
 }

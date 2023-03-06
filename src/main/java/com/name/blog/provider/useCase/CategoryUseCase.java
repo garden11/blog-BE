@@ -18,7 +18,7 @@ public interface CategoryUseCase {
     CategoryDTO updateCategory(Long id, CategoryRequestDTO categoryRequestDTO);
 
     @Transactional
-    CategoryDTO deleteCategory(Long id);
+    void deleteCategory(Long id);
 
     @Transactional
     boolean isValidCategory(String username, Long id);

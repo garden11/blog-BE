@@ -24,10 +24,4 @@ public class PostImageController {
 	public PostImageDTO createPostImage(PostImageRequestDTO postImageRequestDTO) {
 		return postImageService.insertPostImage(postImageRequestDTO);
 	}
-
-	@PutMapping("/api/v1/post/{postId}/post-images")
-	@Auth(roles = {Role.USER})
-	public void updatePostImages(@PathVariable("postId") Long postId, @RequestBody PostImageRequestDTO postImageRequestDTO) {
-		postImageService.updatePostImagesByPostIdAndUriList(postId, postImageRequestDTO.getUriList());
-	}
 }

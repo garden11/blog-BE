@@ -19,11 +19,11 @@ public class CommentDTO {
 
 	public static CommentDTO of(Comment comment) {
 	    return CommentDTO.builder()
-				.id(responseUtil.convertString(comment.getId()))
-	    		.postId(responseUtil.convertString(comment.getPostId()))
-	            .username(comment.getUsername())
-	            .content(comment.getContent())
-	            .registeredAt(responseUtil.convertString(comment.getRegisteredAt()))
+				.id(responseUtil.handleValue(comment.getId()))
+	    		.postId(responseUtil.handleValue(comment.getPostId()))
+	            .username(responseUtil.handleValue(comment.getUsername()))
+	            .content(responseUtil.handleValue(comment.getContent()))
+	            .registeredAt(responseUtil.handleValue(comment.getRegisteredAt()))
 	            .build();
 	}
 }

@@ -24,16 +24,16 @@ public class PostViewDTO {
 
 	public static PostViewDTO of(PostView postView) {
 		 return PostViewDTO.builder()
-				 .id(responseUtil.convertString(postView.getId()))
-				 .username(postView.getUsername())
-				 .categoryId(responseUtil.convertString(postView.getCategoryId()))
-				 .categoryName(postView.getCategoryName())
-				 .title(postView.getTitle())
-				 .content(postView.getContent())
-				 .registeredAt(responseUtil.convertString(postView.getRegisteredAt()))
-				 .updatedAt(responseUtil.convertString(postView.getUpdatedAt()))
-				 .thumbnailImageId(responseUtil.convertString(postView.getThumbnailImageId()))
-				 .thumbnailImageUri(postView.getThumbnailImageUri())
+				 .id(responseUtil.handleValue(postView.getId()))
+				 .username(responseUtil.handleValue(postView.getUsername()))
+				 .categoryId(responseUtil.handleValue(postView.getCategoryId()))
+				 .categoryName(responseUtil.handleValue(postView.getCategoryName()))
+				 .title(responseUtil.handleValue(postView.getTitle()))
+				 .content(responseUtil.handleValue(postView.getContent()))
+				 .registeredAt(responseUtil.handleValue(postView.getRegisteredAt()))
+				 .updatedAt(responseUtil.handleValue(postView.getUpdatedAt()))
+				 .thumbnailImageId(responseUtil.handleValue(postView.getThumbnailImageId()))
+				 .thumbnailImageUri(responseUtil.handleValue(postView.getThumbnailImageUri()))
 				 .build();
 	}
 }

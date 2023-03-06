@@ -17,9 +17,9 @@ public class CategoryDTO {
 
     public static CategoryDTO of(Category category) {
         return CategoryDTO.builder()
-                .id(responseUtil.convertString(category.getId()))
-                .username(category.getUsername())
-                .name(category.getName())
+                .id(responseUtil.handleValue(category.getId()))
+                .username(responseUtil.handleValue(category.getUsername()))
+                .name(responseUtil.handleValue(category.getName()))
                 .build();
     }
 }

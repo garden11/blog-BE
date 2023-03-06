@@ -3,6 +3,7 @@ package com.name.blog.provider.dto;
 import com.name.blog.core.entity.User;
 import com.name.blog.core.security.Role;
 
+import com.name.blog.util.ResponseUtil;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -11,13 +12,15 @@ import lombok.Getter;
 public class UserDTO {
 	private String email;
 	private String username;
-	private Role role;
-	
+	private String role;
+
+    private final static ResponseUtil responseUtil = new ResponseUtil();
+
     public static UserDTO of(User user) {
         return UserDTO.builder()
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .role(Role.of(user.getRole()))
+                .username(responseUtil.handleValue(user.getUsername()))
+                .email(responseUtil.handleValue(user.getEmail()))
+                .role(responseUtil.handleValue(user.getRole()))
                 .build();
     }
 }

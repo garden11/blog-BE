@@ -3,7 +3,7 @@ package com.name.blog.provider.service;
 import com.name.blog.core.repository.PostImageRepository;
 import com.name.blog.core.repository.ProfileImageRepository;
 import com.name.blog.exception.ThreadRuntimeException;
-import com.name.blog.util.S3FileUploader;
+//import com.name.blog.util.S3FileUploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ import java.util.concurrent.Executors;
 @Service
 @RequiredArgsConstructor
 public class DBManageService {
-    private final S3FileUploader s3FileUploader;
+//    private final S3FileUploader s3FileUploader;
 
     private final PostImageRepository postImageRepository;
     private final ProfileImageRepository profileImageRepository;
@@ -119,7 +119,7 @@ public class DBManageService {
             nameList.add(String.valueOf(idAndName[1]));
         }
 
-        s3FileUploader.deleteFiles(nameList);
+//        s3FileUploader.deleteFiles(nameList);
         postImageRepository.deleteByIdIn(idList);
     }
 
@@ -136,7 +136,7 @@ public class DBManageService {
             nameList.add(String.valueOf(idAndName[1]));
         }
 
-        s3FileUploader.deleteFiles(nameList);
+//        s3FileUploader.deleteFiles(nameList);
         profileImageRepository.deleteByIdIn(idList);
     }
 }

@@ -3,7 +3,7 @@ package com.name.blog.provider.useCase;
 import com.name.blog.provider.dto.CommentViewDTO;
 import org.springframework.data.domain.Page;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

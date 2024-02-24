@@ -3,7 +3,7 @@ package com.name.blog.provider.useCase;
 import com.name.blog.provider.dto.PostImageDTO;
 import com.name.blog.web.dto.PostImageRequestDTO;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.util.List;
 
 public interface PostImageUseCase {

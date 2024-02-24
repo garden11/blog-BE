@@ -3,7 +3,7 @@ package com.name.blog.provider.service;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.name.blog.core.repository.PostRepository;
 import com.name.blog.provider.useCase.CategoryUseCase;

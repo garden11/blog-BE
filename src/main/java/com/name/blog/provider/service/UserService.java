@@ -2,7 +2,7 @@ package com.name.blog.provider.service;
 
 import java.util.Optional;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.name.blog.exception.UserUpdateFailedException;
 import com.name.blog.provider.useCase.UserUseCase;

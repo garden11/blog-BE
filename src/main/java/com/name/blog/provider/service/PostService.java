@@ -1,6 +1,6 @@
 package com.name.blog.provider.service;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.name.blog.core.repository.PostImageRepository;
 import com.name.blog.provider.useCase.PostUseCase;

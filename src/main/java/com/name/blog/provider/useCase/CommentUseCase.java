@@ -4,7 +4,7 @@ import com.name.blog.provider.dto.CommentDTO;
 import com.name.blog.web.dto.CommentRequestDTO;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 
 public interface CommentUseCase {
     @Transactional

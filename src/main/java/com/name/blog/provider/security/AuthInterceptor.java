@@ -3,8 +3,8 @@ package com.name.blog.provider.security;
 import java.util.Arrays;
 import java.util.Optional;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import com.name.blog.core.security.Auth;
 import com.name.blog.exception.CustomAccessTokenRuntimeException;

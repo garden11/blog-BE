@@ -3,7 +3,7 @@ package com.name.blog.provider.useCase;
 import com.name.blog.provider.dto.CategoryDTO;
 import com.name.blog.web.dto.CategoryRequestDTO;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 

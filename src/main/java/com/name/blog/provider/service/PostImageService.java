@@ -3,7 +3,7 @@ package com.name.blog.provider.service;
 import java.io.IOException;
 import java.util.*;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.name.blog.provider.useCase.PostImageUseCase;
 import org.springframework.beans.factory.annotation.Value;

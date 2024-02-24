@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.name.blog.provider.useCase.ProfileImageUseCase;
 import org.springframework.beans.factory.annotation.Value;

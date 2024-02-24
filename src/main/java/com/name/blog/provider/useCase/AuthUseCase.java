@@ -2,7 +2,7 @@ package com.name.blog.provider.useCase;
 
 import com.name.blog.web.dto.*;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.util.Map;
 
 public interface AuthUseCase {

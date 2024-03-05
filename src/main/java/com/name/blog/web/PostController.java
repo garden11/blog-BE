@@ -2,14 +2,9 @@ package com.name.blog.web;
 
 import com.name.blog.core.security.Auth;
 import com.name.blog.core.security.Role;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.name.blog.provider.dto.PostDetailDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
 
 import com.name.blog.provider.dto.PostDTO;
 import com.name.blog.provider.service.PostService;
@@ -51,5 +46,22 @@ public class PostController {
 	@GetMapping("/api/v1/user/{username}/post/{id}/check-post")
 	public boolean checkPost(@PathVariable("username") String username, @PathVariable("id") Long id) {
 		return postService.isValidPost(username, id);
+	}
+
+	@GetMapping("/api/v1/post-view/{id}")
+	public PostDetailDTO getPostViewById(@PathVariable("id") Long id) {
+		return postService.selectPostDetailById(id);
+	}
+
+	@GetMapping("/api/v1/user/{username}/post-views")
+	public Page<PostDetailDTO> getPostViewsByUsername(@PathVariable("username") String username
+			, @RequestParam(value="page", defaultValue="0") Integer page) {
+		return postService.selectPostDetailListByUsername(username, page);
+	}
+
+	@GetMapping("/api/v1/user/{username}/category/{category-id}/post-views")
+	public Page<PostDetailDTO> getPostViewsByCategoryId(@PathVariable("category-id") Long categoryId
+			, @RequestParam(value="page", defaultValue="0") Integer page) {
+		return postService.selectPostDetailListByCategoryId(categoryId, page);
 	}
 }

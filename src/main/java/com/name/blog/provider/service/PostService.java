@@ -1,10 +1,16 @@
 package com.name.blog.provider.service;
 
+import com.name.blog.core.entity.PostInfo;
+import com.name.blog.core.repository.PostInfoRepository;
+import com.name.blog.provider.dto.PostDetailDTO;
 import jakarta.transaction.Transactional;
 
 import com.name.blog.core.repository.PostImageRepository;
 import com.name.blog.provider.useCase.PostUseCase;
-import com.name.blog.util.DateUtil;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.name.blog.core.entity.Post;
@@ -14,15 +20,56 @@ import com.name.blog.web.dto.PostRequestDTO;
 
 import lombok.RequiredArgsConstructor;
 
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class PostService implements PostUseCase {
+	private static final Integer POSTS_PER_PAGE = 5;
+
 	private final PostRepository postRepository;
+	private final PostInfoRepository postInfoRepository;
 	private final PostImageRepository postImageRepository;
+
+	@Override
+	@Transactional
+	public Page<PostDetailDTO> selectPostDetailListByUsername(String username, Integer page) {
+		List<PostDetailDTO> postDetailDTOList = new ArrayList<>();
+
+		Pageable pageable = PageRequest.of(page, POSTS_PER_PAGE);
+		Page<PostInfo> postInfoList = postInfoRepository.findByUsernameOrderByIdDesc(username, pageable);
+
+		for(PostInfo postInfo : postInfoList) {
+			postDetailDTOList.add(PostDetailDTO.of(postInfo));
+		}
+
+		return new PageImpl<>(postDetailDTOList, pageable, postInfoList.getTotalElements());
+	}
+
+	@Override
+	@Transactional
+	public Page<PostDetailDTO> selectPostDetailListByCategoryId(Long categoryId, Integer page) {
+		List<PostDetailDTO> postDetailDTOList = new ArrayList<>();
+
+		Pageable pageable = PageRequest.of(page, POSTS_PER_PAGE);
+		Page<PostInfo> postInfoList = postInfoRepository.findByCategoryIdOrderByIdDesc(categoryId, pageable);
+
+		for(PostInfo postInfo : postInfoList) {
+			postDetailDTOList.add(PostDetailDTO.of(postInfo));
+		}
+
+		return new PageImpl<>(postDetailDTOList, pageable, postInfoList.getTotalElements());
+	}
+
+	@Override
+	@Transactional
+	public PostDetailDTO selectPostDetailById(Long id) {
+		Optional<PostInfo> optionalPostDetail = postInfoRepository.findById(id);
+
+		return PostDetailDTO.of(optionalPostDetail.orElseThrow());
+	}
 
 	@Override
 	@Transactional
@@ -65,12 +112,14 @@ public class PostService implements PostUseCase {
 	@Transactional
 	public void deletePostById(Long id) {
 		Post post = postRepository.findById(id).orElseThrow();
+
 		postRepository.updateDeleteYById(post.getId());
 	}
 
 	@Override
 	@Transactional
 	public boolean isValidPost (String username, Long id) {
+
 		return postRepository.existsByUsernameAndId(username, id);
 	}
 }

@@ -15,7 +15,7 @@ import java.util.concurrent.Executors;
 
 @Service
 @RequiredArgsConstructor
-public class DBManageService {
+public class DataManageService {
 //    private final S3FileUploader s3FileUploader;
 
     private final PostImageRepository postImageRepository;

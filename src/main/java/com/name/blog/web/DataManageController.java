@@ -2,7 +2,7 @@ package com.name.blog.web;
 
 import com.name.blog.core.security.Auth;
 import com.name.blog.core.security.Role;
-import com.name.blog.provider.service.DBManageService;
+import com.name.blog.provider.service.DataManageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,18 +12,18 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping
-public class DBManageController {
-    private final DBManageService dbManageService;
+public class DataManageController {
+    private final DataManageService dataManageService;
 
     @GetMapping("/api/v1/post-image/delete-data/{startId}")
     @Auth(roles = {Role.ADMIN})
     public int deletePostImages(@PathVariable("startId") Long startId) {
-        return dbManageService.runDeletingPostImageThreads(startId);
+        return dataManageService.runDeletingPostImageThreads(startId);
     }
 
     @GetMapping("/api/v1/profile-image/delete-data/{startId}")
     @Auth(roles = {Role.ADMIN})
     public int deleteProfileImage(@PathVariable("startId") Long startId) {
-        return dbManageService.runDeletingProfileImagesThreads(startId);
+        return dataManageService.runDeletingProfileImagesThreads(startId);
     }
 }

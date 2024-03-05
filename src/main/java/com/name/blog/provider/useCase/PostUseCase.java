@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface PostUseCase {
     Page<PostDetailDTO> selectPostDetailListByUsername(String username, Integer page);
     Page<PostDetailDTO> selectPostDetailListByCategoryId(Long categoryId, Integer page);
-    PostDetailDTO selectPostDetailById(Long id);
+    Optional<PostDetailDTO> selectPostDetailById(Long id);
     Optional<PostDTO> selectPostByPostId(Long id);
     PostDTO insertPost(PostRequestDTO postRequestDTO);
     PostDTO updatePostById(Long id, PostRequestDTO postRequestDTO);

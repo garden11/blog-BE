@@ -49,7 +49,7 @@ public class PostController {
 	}
 
 	@GetMapping("/api/v1/post-view/{id}")
-	public PostDetailDTO getPostViewById(@PathVariable("id") Long id) {
+	public Optional<PostDetailDTO> getPostViewById(@PathVariable("id") Long id) {
 		return postService.selectPostDetailById(id);
 	}
 

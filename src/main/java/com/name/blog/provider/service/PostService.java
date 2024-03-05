@@ -65,10 +65,14 @@ public class PostService implements PostUseCase {
 
 	@Override
 	@Transactional
-	public PostDetailDTO selectPostDetailById(Long id) {
+	public Optional<PostDetailDTO> selectPostDetailById(Long id) {
 		Optional<PostInfo> optionalPostDetail = postInfoRepository.findById(id);
 
-		return PostDetailDTO.of(optionalPostDetail.orElseThrow());
+		if(optionalPostDetail.isPresent()) {
+			return Optional.ofNullable(PostDetailDTO.of(optionalPostDetail.get()));
+		} else {
+			return Optional.empty();
+		}
 	}
 
 	@Override

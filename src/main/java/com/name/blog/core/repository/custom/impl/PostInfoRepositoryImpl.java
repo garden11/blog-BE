@@ -81,13 +81,17 @@ public class PostInfoRepositoryImpl implements PostInfoRepositoryCustom {
                         post.content,
                         post.registeredAt,
                         post.updatedAt,
-                        postImage.id.as("thumbnailImageId"),
-                        postImage.uri.as("thumbnailImageUri")
+                        postImage.id.max().as("thumbnailImageId"),
+                        postImage.uri.max().as("thumbnailImageUri")
                 ))
                 .from(post)
-                .leftJoin(category).on(post.categoryId.eq(category.id))
-                .leftJoin(postImage).on(post.id.eq(postImage.postId))
-                .where(post.deleteYN.eq("N").and(post.registerYN.eq("Y")));
+                .leftJoin(category)
+                .on(post.categoryId.eq(category.id))
+                .leftJoin(postImage)
+                .on(post.id.eq(postImage.postId)
+                        .and(postImage.useYN.eq("Y")))
+                .where(post.deleteYN.eq("N").and(post.registerYN.eq("Y")))
+                .groupBy(post.id);
     }
 
     private JPAQuery<Post> selectPost() {

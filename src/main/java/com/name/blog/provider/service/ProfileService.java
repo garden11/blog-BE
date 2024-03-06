@@ -5,6 +5,7 @@ import com.name.blog.core.repository.ProfileInfoRepository;
 import com.name.blog.provider.dto.ProfileDetailDTO;
 import com.name.blog.provider.useCase.ProfileUseCase;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ public class ProfileService implements ProfileUseCase {
     private final ProfileInfoRepository profileInfoRepository;
 
     @Override
+    @Transactional
     public Optional<ProfileDetailDTO> selectUserProfileByUsername(String username) {
         Optional<ProfileInfo> optionalUProfileDetail = profileInfoRepository.findByUsername(username);
 

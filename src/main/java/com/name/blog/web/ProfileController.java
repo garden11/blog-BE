@@ -16,8 +16,8 @@ import java.util.Optional;
 public class ProfileController {
     private final ProfileService profileService;
 
-    @GetMapping("/api/v1/user/{username}/profile-view")
-    public Optional<ProfileDetailDTO> getUserProfile(@PathVariable("username") String username) {
+    @GetMapping("/api/v1/user/{username}/profile-detail")
+    public Optional<ProfileDetailDTO> getProfileDetail(@PathVariable("username") String username) {
         return profileService.selectUserProfileByUsername(username);
     }
 }

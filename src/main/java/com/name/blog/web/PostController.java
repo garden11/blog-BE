@@ -48,19 +48,19 @@ public class PostController {
 		return postService.isValidPost(username, id);
 	}
 
-	@GetMapping("/api/v1/post-view/{id}")
-	public Optional<PostDetailDTO> getPostViewById(@PathVariable("id") Long id) {
+	@GetMapping("/api/v1/post-detail/{id}")
+	public Optional<PostDetailDTO> getPostDetailById(@PathVariable("id") Long id) {
 		return postService.selectPostDetailById(id);
 	}
 
-	@GetMapping("/api/v1/user/{username}/post-views")
-	public Page<PostDetailDTO> getPostViewsByUsername(@PathVariable("username") String username
+	@GetMapping("/api/v1/user/{username}/post-details")
+	public Page<PostDetailDTO> getPostDetailsByUsername(@PathVariable("username") String username
 			, @RequestParam(value="page", defaultValue="0") Integer page) {
 		return postService.selectPostDetailListByUsername(username, page);
 	}
 
-	@GetMapping("/api/v1/user/{username}/category/{category-id}/post-views")
-	public Page<PostDetailDTO> getPostViewsByCategoryId(@PathVariable("category-id") Long categoryId
+	@GetMapping("/api/v1/user/{username}/category/{category-id}/post-details")
+	public Page<PostDetailDTO> getPostDetailsByCategoryId(@PathVariable("category-id") Long categoryId
 			, @RequestParam(value="page", defaultValue="0") Integer page) {
 		return postService.selectPostDetailListByCategoryId(categoryId, page);
 	}

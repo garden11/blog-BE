@@ -18,8 +18,8 @@ import lombok.RequiredArgsConstructor;
 public class CommentController {
 	private final CommentService commentService;
 
-	@GetMapping("/api/v1/post/{post-id}/comment-views")
-	public Page<CommentDetailDTO> getCommentViewsByPostId(@PathVariable("post-id") Long postId
+	@GetMapping("/api/v1/post/{post-id}/comment-details")
+	public Page<CommentDetailDTO> getCommentDetailsByPostId(@PathVariable("post-id") Long postId
 			, @RequestParam(value="page", defaultValue="0") Integer page) {
 		return commentService.selectCommentDetailListByPostId(postId, page);
 	}

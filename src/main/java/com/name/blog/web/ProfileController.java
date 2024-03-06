@@ -17,7 +17,7 @@ public class ProfileController {
     private final ProfileService profileService;
 
     @GetMapping("/api/v1/user/{username}/profile-detail")
-    public Optional<ProfileDetailDTO> getProfileDetail(@PathVariable("username") String username) {
+    public Optional<ProfileDetailDTO> getProfileDetailByUsername(@PathVariable("username") String username) {
         return profileService.selectUserProfileByUsername(username);
     }
 }

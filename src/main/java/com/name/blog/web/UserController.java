@@ -21,7 +21,7 @@ public class UserController {
 	
 	@GetMapping("/api/v1/user/{username}")
 	@Auth(roles = {Role.USER})
-	public Optional <UserDTO> getUser(@PathVariable("username") String username) {
+	public Optional <UserDTO> getUserByUsername(@PathVariable("username") String username) {
 		return userService.selectUserByUsername(username);
 	}
 

@@ -32,7 +32,7 @@ public class CommentController {
 	
 	@DeleteMapping("/api/v1/comment/{id}")
 	@Auth(roles = {Role.USER})
-	public void removeComment(@PathVariable("id") Long id) {
+	public void deleteComment(@PathVariable("id") Long id) {
 		commentService.deleteCommentById(id);
 	}
 }

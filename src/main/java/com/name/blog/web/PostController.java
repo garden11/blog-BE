@@ -21,7 +21,7 @@ public class PostController {
 	private final PostService postService;
 
 	@GetMapping("/api/v1/post/{id}")
-	public Optional<PostDTO> getPost(@PathVariable("id") Long id) {
+	public Optional<PostDTO> getPostById(@PathVariable("id") Long id) {
 		return postService.selectPostByPostId(id);
 	}
 

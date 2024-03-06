@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import jakarta.transaction.Transactional;
 
 public interface CommentUseCase {
-    Page<CommentDetailDTO> selectCommentDetailListByPostId(Long postId, Integer page);
+    Page<CommentDetailDTO> getCommentDetailListByPostId(Long postId, Integer page);
 
-    CommentDTO insertComment(@RequestBody CommentRequestDTO commentRequestDTO);
+    CommentDTO createComment(@RequestBody CommentRequestDTO commentRequestDTO);
 
     void deleteCommentById(Long id);
 }

@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CategoryUseCase {
-    List<CategoryDTO> selectCategoryListByUsername(String username);
+    List<CategoryDTO> getCategoryListByUsername(String username);
 
-    CategoryDTO insertCategory(CategoryRequestDTO categoryRequestDTO);
+    CategoryDTO createCategory(CategoryRequestDTO categoryRequestDTO);
 
     CategoryDTO updateCategory(Long id, CategoryRequestDTO categoryRequestDTO);
 

@@ -19,7 +19,7 @@ public class ProfileService implements ProfileUseCase {
 
     @Override
     @Transactional
-    public Optional<ProfileDetailDTO> selectUserProfileByUsername(String username) {
+    public Optional<ProfileDetailDTO> getUserProfileByUsername(String username) {
         Optional<ProfileInfo> optionalUProfileDetail = profileInfoRepository.findByUsername(username);
 
         if(optionalUProfileDetail.isPresent()) {

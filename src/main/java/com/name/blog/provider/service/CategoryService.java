@@ -24,7 +24,7 @@ public class CategoryService implements CategoryUseCase {
 
 	@Override
 	@Transactional
-	public List<CategoryDTO> selectCategoryListByUsername(String username){
+	public List<CategoryDTO> getCategoryListByUsername(String username){
 		List<CategoryDTO> categoryDTOList = new ArrayList<CategoryDTO>();
 		
     	List<Category> categoryList = categoryRepository.findByUsername(username);
@@ -38,7 +38,7 @@ public class CategoryService implements CategoryUseCase {
 
 	@Override
 	@Transactional
-	public CategoryDTO insertCategory(CategoryRequestDTO categoryRequestDTO) {
+	public CategoryDTO createCategory(CategoryRequestDTO categoryRequestDTO) {
 		return CategoryDTO.of(categoryRepository.save(categoryRequestDTO.toEntity()));
 	}
 

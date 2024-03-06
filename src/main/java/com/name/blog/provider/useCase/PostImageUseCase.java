@@ -7,5 +7,5 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 
 public interface PostImageUseCase {
-    PostImageDTO insertPostImage(PostImageRequestDTO postImageRequestDTO);
+    PostImageDTO createPostImage(PostImageRequestDTO postImageRequestDTO);
 }

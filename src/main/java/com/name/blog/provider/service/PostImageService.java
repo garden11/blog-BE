@@ -39,7 +39,7 @@ public class PostImageService implements PostImageUseCase {
 
 	@Override
 	@Transactional
-	public PostImageDTO insertPostImage(PostImageRequestDTO postImageRequestDTO) {
+	public PostImageDTO createPostImage(PostImageRequestDTO postImageRequestDTO) {
 		// AWS 사용 시 주석 해제
 //		Map<String, Object> uploadedFileInfo = s3FileUploader.uploadFile(postImageRequestDTO.getImage());
 //

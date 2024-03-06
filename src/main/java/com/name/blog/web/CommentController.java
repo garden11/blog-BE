@@ -21,13 +21,13 @@ public class CommentController {
 	@GetMapping("/api/v1/post/{post-id}/comment-details")
 	public Page<CommentDetailDTO> getCommentDetailsByPostId(@PathVariable("post-id") Long postId
 			, @RequestParam(value="page", defaultValue="0") Integer page) {
-		return commentService.selectCommentDetailListByPostId(postId, page);
+		return commentService.getCommentDetailListByPostId(postId, page);
 	}
 
 	@PostMapping("/api/v1/comment")
 	@Auth(roles = {Role.USER})
 	public CommentDTO createComment(@RequestBody CommentRequestDTO commentRequestDTO) {
-		return commentService.insertComment(commentRequestDTO);
+		return commentService.createComment(commentRequestDTO);
 	}
 	
 	@DeleteMapping("/api/v1/comment/{id}")

@@ -5,5 +5,5 @@ import com.name.blog.provider.dto.ProfileDetailDTO;
 import java.util.Optional;
 
 public interface ProfileUseCase {
-    Optional<ProfileDetailDTO> selectUserProfileByUsername(String username);
+    Optional<ProfileDetailDTO> getUserProfileByUsername(String username);
 }

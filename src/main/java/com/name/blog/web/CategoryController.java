@@ -27,13 +27,13 @@ public class CategoryController {
 
 	@GetMapping("/api/v1/user/{username}/categories")
 	public List<CategoryDTO> getCategoriesByUsername(@PathVariable("username") String username) {
-		return categoryService.selectCategoryListByUsername(username);
+		return categoryService.getCategoryListByUsername(username);
 	}
 
 	@PostMapping("/api/v1/category")
 	@Auth(roles = {Role.USER})
 	public CategoryDTO createCategory(@RequestBody CategoryRequestDTO categoryRequestDTO) {
-		return categoryService.insertCategory(categoryRequestDTO);
+		return categoryService.createCategory(categoryRequestDTO);
 	}
 	
 	@PutMapping("/api/v1/category/{id}")

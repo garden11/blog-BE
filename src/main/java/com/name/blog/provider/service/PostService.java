@@ -35,7 +35,7 @@ public class PostService implements PostUseCase {
 
 	@Override
 	@Transactional
-	public Page<PostDetailDTO> selectPostDetailListByUsername(String username, Integer page) {
+	public Page<PostDetailDTO> getPostDetailListByUsername(String username, Integer page) {
 		List<PostDetailDTO> postDetailDTOList = new ArrayList<>();
 
 		Pageable pageable = PageRequest.of(page, POSTS_PER_PAGE);
@@ -50,7 +50,7 @@ public class PostService implements PostUseCase {
 
 	@Override
 	@Transactional
-	public Page<PostDetailDTO> selectPostDetailListByCategoryId(Long categoryId, Integer page) {
+	public Page<PostDetailDTO> getPostDetailListByCategoryId(Long categoryId, Integer page) {
 		List<PostDetailDTO> postDetailDTOList = new ArrayList<>();
 
 		Pageable pageable = PageRequest.of(page, POSTS_PER_PAGE);
@@ -65,7 +65,7 @@ public class PostService implements PostUseCase {
 
 	@Override
 	@Transactional
-	public Optional<PostDetailDTO> selectPostDetailById(Long id) {
+	public Optional<PostDetailDTO> getPostDetailById(Long id) {
 		Optional<PostInfo> optionalPostDetail = postInfoRepository.findById(id);
 
 		if(optionalPostDetail.isPresent()) {
@@ -77,7 +77,7 @@ public class PostService implements PostUseCase {
 
 	@Override
 	@Transactional
-	public Optional<PostDTO> selectPostByPostId (Long id) {
+	public Optional<PostDTO> getPostByPostId (Long id) {
 		Optional<Post> optionalPost = postRepository.findById(id);
 
 		if(optionalPost.isPresent()) {
@@ -89,7 +89,7 @@ public class PostService implements PostUseCase {
 
 	@Override
 	@Transactional
-	public PostDTO insertPost(PostRequestDTO postRequestDTO) {
+	public PostDTO createPost(PostRequestDTO postRequestDTO) {
 		Post post = postRequestDTO.toEntity();
 
 		return PostDTO.of(postRepository.save(post));

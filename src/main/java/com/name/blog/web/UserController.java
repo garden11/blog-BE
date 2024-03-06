@@ -22,7 +22,7 @@ public class UserController {
 	@GetMapping("/api/v1/user/{username}")
 	@Auth(roles = {Role.USER})
 	public Optional <UserDTO> getUserByUsername(@PathVariable("username") String username) {
-		return userService.selectUserByUsername(username);
+		return userService.getUserByUsername(username);
 	}
 
 	@PutMapping("/api/v1/user/{username}")

@@ -22,13 +22,13 @@ public class PostController {
 
 	@GetMapping("/api/v1/post/{id}")
 	public Optional<PostDTO> getPostById(@PathVariable("id") Long id) {
-		return postService.selectPostByPostId(id);
+		return postService.getPostByPostId(id);
 	}
 
 	@PostMapping("/api/v1/post")
 	@Auth(roles = {Role.USER})
 	public PostDTO createPost(@RequestBody PostRequestDTO postRequestDTO) {
-		return postService.insertPost(postRequestDTO);
+		return postService.createPost(postRequestDTO);
 	}
 
 	@PutMapping("/api/v1/post/{id}")
@@ -50,18 +50,18 @@ public class PostController {
 
 	@GetMapping("/api/v1/post-detail/{id}")
 	public Optional<PostDetailDTO> getPostDetailById(@PathVariable("id") Long id) {
-		return postService.selectPostDetailById(id);
+		return postService.getPostDetailById(id);
 	}
 
 	@GetMapping("/api/v1/user/{username}/post-details")
 	public Page<PostDetailDTO> getPostDetailsByUsername(@PathVariable("username") String username
 			, @RequestParam(value="page", defaultValue="0") Integer page) {
-		return postService.selectPostDetailListByUsername(username, page);
+		return postService.getPostDetailListByUsername(username, page);
 	}
 
 	@GetMapping("/api/v1/user/{username}/category/{category-id}/post-details")
 	public Page<PostDetailDTO> getPostDetailsByCategoryId(@PathVariable("category-id") Long categoryId
 			, @RequestParam(value="page", defaultValue="0") Integer page) {
-		return postService.selectPostDetailListByCategoryId(categoryId, page);
+		return postService.getPostDetailListByCategoryId(categoryId, page);
 	}
 }

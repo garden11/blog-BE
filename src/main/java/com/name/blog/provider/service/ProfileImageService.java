@@ -40,7 +40,7 @@ public class ProfileImageService implements ProfileImageUseCase {
 
 	@Override
 	@Transactional
-	public ProfileImageDTO insertProfileImage(ProfileImageRequestDTO profileImageRequestDTO) {
+	public ProfileImageDTO createProfileImage(ProfileImageRequestDTO profileImageRequestDTO) {
 		List<ProfileImage> profileImageList= profileImageRepository.findByProfileId(Long.valueOf(profileImageRequestDTO.getProfileId()));
 		List<Long> profileImageIdList = new ArrayList();
 

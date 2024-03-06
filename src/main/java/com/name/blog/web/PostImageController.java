@@ -22,6 +22,6 @@ public class PostImageController {
 	@PostMapping("/api/v1/post-image")
 	@Auth(roles = {Role.USER})
 	public PostImageDTO createPostImage(PostImageRequestDTO postImageRequestDTO) {
-		return postImageService.insertPostImage(postImageRequestDTO);
+		return postImageService.createPostImage(postImageRequestDTO);
 	}
 }

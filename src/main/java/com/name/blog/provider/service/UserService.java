@@ -22,7 +22,7 @@ public class UserService implements UserUseCase {
 
 	@Override
 	@Transactional
-	public Optional<UserDTO> selectUserByUsername (String username) {
+	public Optional<UserDTO> getUserByUsername (String username) {
 		Optional<User> optionalUser = userRepository.findByUsername(username);
 
 		if(optionalUser.isPresent()) {

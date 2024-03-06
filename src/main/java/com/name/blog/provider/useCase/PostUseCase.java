@@ -10,15 +10,15 @@ import org.springframework.data.domain.Page;
 import java.util.Optional;
 
 public interface PostUseCase {
-    Page<PostDetailDTO> selectPostDetailListByUsername(String username, Integer page);
+    Page<PostDetailDTO> getPostDetailListByUsername(String username, Integer page);
 
-    Page<PostDetailDTO> selectPostDetailListByCategoryId(Long categoryId, Integer page);
+    Page<PostDetailDTO> getPostDetailListByCategoryId(Long categoryId, Integer page);
 
-    Optional<PostDetailDTO> selectPostDetailById(Long id);
+    Optional<PostDetailDTO> getPostDetailById(Long id);
 
-    Optional<PostDTO> selectPostByPostId(Long id);
+    Optional<PostDTO> getPostByPostId(Long id);
 
-    PostDTO insertPost(PostRequestDTO postRequestDTO);
+    PostDTO createPost(PostRequestDTO postRequestDTO);
 
     PostDTO updatePostById(Long id, PostRequestDTO postRequestDTO);
 

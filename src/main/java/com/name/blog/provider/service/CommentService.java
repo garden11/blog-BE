@@ -33,7 +33,7 @@ public class CommentService implements CommentUseCase {
 
 	@Override
 	@Transactional
-	public Page<CommentDetailDTO> selectCommentDetailListByPostId(Long postId, Integer page) {
+	public Page<CommentDetailDTO> getCommentDetailListByPostId(Long postId, Integer page) {
 		List<CommentDetailDTO> commentDetailDTOList = new ArrayList<>();
 		Pageable pageable = PageRequest.of(page, COMMENTS_PER_PAGE);
 
@@ -65,7 +65,7 @@ public class CommentService implements CommentUseCase {
 
 	@Override
 	@Transactional
-	public CommentDTO insertComment(CommentRequestDTO commentRequestDTO) {
+	public CommentDTO createComment(CommentRequestDTO commentRequestDTO) {
 		return CommentDTO.of(commentRepository.save(commentRequestDTO.toEntity()));
 	}
 

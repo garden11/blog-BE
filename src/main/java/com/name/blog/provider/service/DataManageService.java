@@ -4,6 +4,7 @@ import com.name.blog.core.repository.PostImageRepository;
 import com.name.blog.core.repository.ProfileImageRepository;
 import com.name.blog.exception.ThreadRuntimeException;
 //import com.name.blog.util.S3FileUploader;
+import com.name.blog.provider.useCase.DataManageUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ import java.util.concurrent.Executors;
 
 @Service
 @RequiredArgsConstructor
-public class DataManageService {
+public class DataManageService implements DataManageUseCase {
 //    private final S3FileUploader s3FileUploader;
 
     private final PostImageRepository postImageRepository;
@@ -24,6 +25,7 @@ public class DataManageService {
     // S3 1회 처리양(최대 1000)
     private final int S3_PROCESS_AMOUNT = 1000;
 
+    @Override
     @Transactional
     public int runDeletingPostImageThreads(Long startId)  {
         int processAmount = S3_PROCESS_AMOUNT;
@@ -65,6 +67,7 @@ public class DataManageService {
         }
     }
 
+    @Override
     @Transactional
     public int runDeletingProfileImagesThreads(Long startId) {
         int processAmount = S3_PROCESS_AMOUNT;

@@ -7,6 +7,5 @@ import jakarta.transaction.Transactional;
 import java.util.Optional;
 
 public interface ProfileImageUseCase {
-    @Transactional
     ProfileImageDTO insertProfileImage(ProfileImageRequestDTO profileImageRequestDTO);
 }

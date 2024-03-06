@@ -10,6 +10,8 @@ import jakarta.transaction.Transactional;
 
 public interface CommentUseCase {
     Page<CommentDetailDTO> selectCommentDetailListByPostId(Long postId, Integer page);
+
     CommentDTO insertComment(@RequestBody CommentRequestDTO commentRequestDTO);
+
     void deleteCommentById(Long id);
 }

@@ -8,18 +8,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CategoryUseCase {
-    @Transactional
     List<CategoryDTO> selectCategoryListByUsername(String username);
 
-    @Transactional
     CategoryDTO insertCategory(CategoryRequestDTO categoryRequestDTO);
 
-    @Transactional
     CategoryDTO updateCategory(Long id, CategoryRequestDTO categoryRequestDTO);
 
-    @Transactional
     void deleteCategory(Long id);
 
-    @Transactional
     boolean isValidCategory(String username, Long id);
 }

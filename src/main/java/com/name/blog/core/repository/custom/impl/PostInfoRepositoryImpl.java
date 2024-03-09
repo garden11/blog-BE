@@ -60,7 +60,7 @@ public class PostInfoRepositoryImpl implements PostInfoRepositoryCustom {
                 .fetch();
 
         Long totalCount = (long) selectPost()
-                .where(category.id.eq(categoryId))
+                .where(post.categoryId.eq(categoryId))
                 .orderBy(post.id.desc())
                 .fetch()
                 .size();

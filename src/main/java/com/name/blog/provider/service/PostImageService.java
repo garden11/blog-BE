@@ -35,6 +35,9 @@ public class PostImageService implements PostImageUseCase {
 	@Value("${local.post.image.file.upload.handler.path}")
 	private String localPostImageFileUploadHandlerPath;
 
+	@Value("${domain.uri}")
+	private String domainUri;
+
 	private final PostImageRepository postImageRepository;
 
 	@Override
@@ -61,7 +64,7 @@ public class PostImageService implements PostImageUseCase {
 
 		PostImageDTO postImageDTO = PostImageDTO.of(postImageRepository.save(PostImage.builder()
 				.postId(postImageRequestDTO.getPostId())
-				.uri(uploadedFileInfo.get(localFileUploader.URI_KEY).toString())
+				.uri(domainUri + uploadedFileInfo.get(localFileUploader.URI_KEY).toString())
 				.originalName(uploadedFileInfo.get(localFileUploader.ORIGINAL_FILE_NAME_KEY).toString())
 				.name(uploadedFileInfo.get(localFileUploader.CHANGED_FILE_NAME_KEY).toString())
 				.build()));

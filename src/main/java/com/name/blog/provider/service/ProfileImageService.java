@@ -32,11 +32,15 @@ public class ProfileImageService implements ProfileImageUseCase {
 //	private final S3FileUploader s3FileUploader;
 	private final ProfileImageRepository profileImageRepository;
 
+	// 로컬 저장소 사용 시 주석 해제
 	@Value("${local.profile.image.file.upload.path}")
 	private String localProfileImageFileUploadPath;
 	
 	@Value("${local.profile.image.file.upload.handler.path}")
 	private String localProfileImageFileUploadHandlerPath;
+
+	@Value("${domain.uri}")
+	private String domainUri;
 
 	@Override
 	@Transactional
@@ -71,7 +75,7 @@ public class ProfileImageService implements ProfileImageUseCase {
 
 		ProfileImageDTO profileImageDTO = ProfileImageDTO.of(profileImageRepository.save(ProfileImage.builder()
 			.profileId(Long.valueOf(profileImageRequestDTO.getProfileId()))
-			.uri(uploadedFileInfo.get(localFileUploader.URI_KEY).toString())
+			.uri(domainUri + uploadedFileInfo.get(localFileUploader.URI_KEY).toString())
 			.originalName(uploadedFileInfo.get(localFileUploader.ORIGINAL_FILE_NAME_KEY).toString())
 			.name(uploadedFileInfo.get(localFileUploader.CHANGED_FILE_NAME_KEY).toString())
 			.build()

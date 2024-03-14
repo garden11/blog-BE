@@ -11,5 +11,6 @@ import java.util.Optional;
 public interface PostInfoRepositoryCustom {
     Optional<PostInfo> findById(Long id);
     Page<PostInfo> findByUsernameOrderByIdDesc(String username, Pageable pageable);
+    Page<PostInfo> findOrderByIdDesc(Pageable pageable);
 
 }

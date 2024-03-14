@@ -53,6 +53,11 @@ public class PostController {
 		return postService.getPostDetailById(id);
 	}
 
+	@GetMapping("/api/v1/post-details")
+	public Page<PostDetailDTO> getPostDetails(@RequestParam(value="page", defaultValue="0") Integer page) {
+		return postService.getPostDetailList(page);
+	}
+
 	@GetMapping("/api/v1/user/{username}/post-details")
 	public Page<PostDetailDTO> getPostDetailsByUsername(@PathVariable("username") String username
 			, @RequestParam(value="page", defaultValue="0") Integer page) {

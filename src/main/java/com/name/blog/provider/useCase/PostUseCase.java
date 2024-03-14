@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import java.util.Optional;
 
 public interface PostUseCase {
+    Page<PostDetailDTO> getPostDetailList(Integer page);
+
     Page<PostDetailDTO> getPostDetailListByUsername(String username, Integer page);
 
     Optional<PostDetailDTO> getPostDetailById(Long id);

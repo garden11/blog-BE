@@ -35,6 +35,22 @@ public class PostService implements PostUseCase {
 
 	@Override
 	@Transactional
+	public Page<PostDetailDTO> getPostDetailList(Integer page) {
+		List<PostDetailDTO> postDetailDTOList = new ArrayList<>();
+
+		Pageable pageable = PageRequest.of(page, POSTS_PER_PAGE);
+		Page<PostInfo> postInfoList = postInfoRepository.findOrderByIdDesc(pageable);
+
+		for(PostInfo postInfo : postInfoList) {
+			postDetailDTOList.add(PostDetailDTO.of(postInfo));
+		}
+
+		return new PageImpl<>(postDetailDTOList, pageable, postInfoList.getTotalElements());
+	}
+
+
+	@Override
+	@Transactional
 	public Page<PostDetailDTO> getPostDetailListByUsername(String username, Integer page) {
 		List<PostDetailDTO> postDetailDTOList = new ArrayList<>();
 

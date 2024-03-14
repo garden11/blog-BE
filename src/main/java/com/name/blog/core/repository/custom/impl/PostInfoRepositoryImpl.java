@@ -33,6 +33,22 @@ public class PostInfoRepositoryImpl implements PostInfoRepositoryCustom {
     }
 
     @Override
+    public Page<PostInfo> findOrderByIdDesc(Pageable pageable) {
+        List<PostInfo> postInfoList = selectPostInfo()
+                .orderBy(post.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        Long totalCount = (long) selectPost()
+                .fetch()
+                .size();
+
+        return new PageImpl<>(postInfoList, pageable, totalCount);
+    }
+
+
+    @Override
     public Page<PostInfo> findByUsernameOrderByIdDesc(String username, Pageable pageable) {
 
         List<PostInfo> postInfoList = selectPostInfo()
@@ -49,6 +65,7 @@ public class PostInfoRepositoryImpl implements PostInfoRepositoryCustom {
 
         return new PageImpl<>(postInfoList, pageable, totalCount);
     }
+
 
     private JPAQuery<PostInfo> selectPostInfo() {
 

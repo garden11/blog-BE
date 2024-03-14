@@ -73,6 +73,6 @@ public class CommentService implements CommentUseCase {
 	@Transactional
 	public void deleteCommentById(Long id) {
 		Comment comment = commentRepository.findById(id).orElseThrow();
-		commentRepository.updateDeleteYById(comment.getId());
+		commentRepository.updateDeletingById(comment.getId());
 	}
 }

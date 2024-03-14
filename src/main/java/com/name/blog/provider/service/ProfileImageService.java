@@ -52,7 +52,7 @@ public class ProfileImageService implements ProfileImageUseCase {
 			profileImageIdList.add(profileImage.getId());
 		}
 
-		profileImageRepository.updateAllUseNByIdIn(profileImageIdList);
+		profileImageRepository.updateNotUsingByIdIn(profileImageIdList);
 
 		// AWS 사용 시 주석 해제
 //		Map<String, Object> uploadedFileInfo = s3FileUploader.uploadFile(profileImageRequestDTO.getImage());

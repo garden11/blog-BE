@@ -14,7 +14,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class ProfileService implements ProfileUseCase {
-    private final EntityManager entityManager;
     private final ProfileInfoRepository profileInfoRepository;
 
     @Override

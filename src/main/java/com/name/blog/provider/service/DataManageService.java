@@ -5,6 +5,7 @@ import com.name.blog.core.repository.ProfileImageRepository;
 import com.name.blog.exception.ThreadRuntimeException;
 //import com.name.blog.util.S3FileUploader;
 import com.name.blog.provider.useCase.DataManageUseCase;
+import com.querydsl.core.Tuple;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,21 @@ public class DataManageService implements DataManageUseCase {
         int processAmount = S3_PROCESS_AMOUNT;
 
         try {
-            List<Object[]> idAndNameList = postImageRepository.selectIdsAndNamesExpired(startId);
+            List<Tuple> tupleList = postImageRepository.findIdAndNameListByIdExpired(startId);
+            List<Object[]> idAndNameList = new ArrayList<>();
+
+            for (Tuple tuple : tupleList) {
+                Object[] idAndName = new Object[tuple.size()];
+
+                Object id = tuple.get(0, Object.class);
+                Object name = tuple.get(1, Object.class);
+
+                idAndName[0] = id;
+                idAndName[1] = name;
+
+                idAndNameList.add(idAndName);
+            }
+
             int totalCount = idAndNameList.size();
             int runCount = Long.valueOf(totalCount /processAmount).intValue() + 1;
 
@@ -73,7 +88,21 @@ public class DataManageService implements DataManageUseCase {
         int processAmount = S3_PROCESS_AMOUNT;
 
         try {
-            List<Object[]> idAndNameList = profileImageRepository.selectIdsAndNamesExpired(startId);
+            List<Tuple> tupleList = profileImageRepository.findIdAndNameListByIdExpired(startId);
+            List<Object[]> idAndNameList = new ArrayList<>();
+
+            for (Tuple tuple : tupleList) {
+                Object[] idAndName = new Object[tuple.size()];
+
+                Object id = tuple.get(0, Object.class);
+                Object name = tuple.get(1, Object.class);
+
+                idAndName[0] = id;
+                idAndName[1] = name;
+
+                idAndNameList.add(idAndName);
+            }
+
             int totalCount = idAndNameList.size();
             int runCount = Long.valueOf(totalCount /processAmount).intValue() + 1;
 

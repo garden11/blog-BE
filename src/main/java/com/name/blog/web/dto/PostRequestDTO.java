@@ -9,7 +9,6 @@ import java.util.List;
 @Data
 public class PostRequestDTO {
 	private String username;
-	private String categoryId;
 	private String title;
 	// DB MIDIUMTEXT default value 설정 불가
 	private String content = "";

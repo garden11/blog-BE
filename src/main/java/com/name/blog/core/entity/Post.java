@@ -32,9 +32,6 @@ public class Post {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "category_id")
-	private Long categoryId;
-
     @NotNull
     @Column(name = "username")
     @Size(min = 4, max = 20)
@@ -76,7 +73,6 @@ public class Post {
     }
 
     public void updatePost(PostRequestDTO postRequestDTO) {
-        this.categoryId = Long.valueOf(postRequestDTO.getCategoryId());
         this.title = postRequestDTO.getTitle();
         this.content = postRequestDTO.getContent();
 

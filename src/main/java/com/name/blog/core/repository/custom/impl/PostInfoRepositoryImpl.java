@@ -17,7 +17,6 @@ import java.util.Optional;
 
 import static com.name.blog.core.entity.QPost.post;
 import static com.name.blog.core.entity.QPostImage.postImage;
-import static com.name.blog.core.entity.QCategory.category;
 
 
 @RequiredArgsConstructor
@@ -51,23 +50,6 @@ public class PostInfoRepositoryImpl implements PostInfoRepositoryCustom {
         return new PageImpl<>(postInfoList, pageable, totalCount);
     }
 
-    @Override
-    public Page<PostInfo> findByCategoryIdOrderByIdDesc(Long categoryId, Pageable pageable) {
-
-        List<PostInfo>  postInfoList = selectPostInfo()
-                .where(category.id.eq(categoryId))
-                .orderBy(post.id.desc())
-                .fetch();
-
-        Long totalCount = (long) selectPost()
-                .where(post.categoryId.eq(categoryId))
-                .orderBy(post.id.desc())
-                .fetch()
-                .size();
-
-        return new PageImpl<>(postInfoList, pageable, totalCount);
-    }
-
     private JPAQuery<PostInfo> selectPostInfo() {
 
         return queryFactory
@@ -75,8 +57,6 @@ public class PostInfoRepositoryImpl implements PostInfoRepositoryCustom {
                         PostInfo.class,
                         post.id,
                         post.username,
-                        post.categoryId,
-                        category.name.as("categoryName"),
                         post.title,
                         post.content,
                         post.registeredAt,
@@ -85,8 +65,6 @@ public class PostInfoRepositoryImpl implements PostInfoRepositoryCustom {
                         postImage.uri.max().as("thumbnailImageUri")
                 ))
                 .from(post)
-                .leftJoin(category)
-                .on(post.categoryId.eq(category.id))
                 .leftJoin(postImage)
                 .on(post.id.eq(postImage.postId)
                         .and(postImage.useYN.eq("Y")))

@@ -50,21 +50,6 @@ public class PostService implements PostUseCase {
 
 	@Override
 	@Transactional
-	public Page<PostDetailDTO> getPostDetailListByCategoryId(Long categoryId, Integer page) {
-		List<PostDetailDTO> postDetailDTOList = new ArrayList<>();
-
-		Pageable pageable = PageRequest.of(page, POSTS_PER_PAGE);
-		Page<PostInfo> postInfoList = postInfoRepository.findByCategoryIdOrderByIdDesc(categoryId, pageable);
-
-		for(PostInfo postInfo : postInfoList) {
-			postDetailDTOList.add(PostDetailDTO.of(postInfo));
-		}
-
-		return new PageImpl<>(postDetailDTOList, pageable, postInfoList.getTotalElements());
-	}
-
-	@Override
-	@Transactional
 	public Optional<PostDetailDTO> getPostDetailById(Long id) {
 		Optional<PostInfo> optionalPostDetail = postInfoRepository.findById(id);
 

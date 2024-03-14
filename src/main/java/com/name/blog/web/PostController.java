@@ -58,10 +58,4 @@ public class PostController {
 			, @RequestParam(value="page", defaultValue="0") Integer page) {
 		return postService.getPostDetailListByUsername(username, page);
 	}
-
-	@GetMapping("/api/v1/user/{username}/category/{category-id}/post-details")
-	public Page<PostDetailDTO> getPostDetailsByCategoryId(@PathVariable("category-id") Long categoryId
-			, @RequestParam(value="page", defaultValue="0") Integer page) {
-		return postService.getPostDetailListByCategoryId(categoryId, page);
-	}
 }

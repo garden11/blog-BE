@@ -13,8 +13,6 @@ public class PostInfo {
     @Id
     private Long id;
     private String username;
-    private Long categoryId;
-    private String categoryName;
     private String title;
     private String content;
     private Long registeredAt;
@@ -23,11 +21,9 @@ public class PostInfo {
     private String thumbnailImageUri;
 
     @QueryProjection
-    public PostInfo(Long id, String username, Long categoryId, String  categoryName, String title, String content, Long registeredAt, Long updatedAt, Long thumbnailImageId, String thumbnailImageUri) {
+    public PostInfo(Long id, String username, String title, String content, Long registeredAt, Long updatedAt, Long thumbnailImageId, String thumbnailImageUri) {
         this.id = id;
         this.username = username;
-        this.categoryId = categoryId;
-        this.categoryName = categoryName;
         this.title = title;
         this.content = content;
         this.registeredAt = registeredAt;

@@ -1,7 +1,9 @@
 package com.name.blog.provider.service;
 
 import com.name.blog.core.entity.PostInfo;
+import com.name.blog.core.entity.ProfileInfo;
 import com.name.blog.core.repository.PostInfoRepository;
+import com.name.blog.core.repository.ProfileInfoRepository;
 import com.name.blog.provider.dto.PostDetailDTO;
 import jakarta.transaction.Transactional;
 
@@ -23,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +35,7 @@ public class PostService implements PostUseCase {
 	private final PostRepository postRepository;
 	private final PostInfoRepository postInfoRepository;
 	private final PostImageRepository postImageRepository;
+	private final ProfileInfoRepository profileInfoRepository;
 
 	@Override
 	@Transactional
@@ -41,8 +45,21 @@ public class PostService implements PostUseCase {
 		Pageable pageable = PageRequest.of(page, POSTS_PER_PAGE);
 		Page<PostInfo> postInfoList = postInfoRepository.findOrderByIdDesc(pageable);
 
+		List<ProfileInfo> profileInfoList = profileInfoRepository.findByUsernameIn(
+				postInfoList.getContent().stream()
+						.map(postInfo -> postInfo.getUsername())
+						.collect(Collectors.toList())
+		);
+
 		for(PostInfo postInfo : postInfoList) {
-			postDetailDTOList.add(PostDetailDTO.of(postInfo));
+			Optional<ProfileInfo> optionalProfileInfo = profileInfoList.stream()
+					.filter(profileInfo -> profileInfo.getUsername() == postInfo.getUsername())
+					.findFirst();
+
+			ProfileInfo profileInfo = optionalProfileInfo
+					.orElseGet(ProfileInfo::new);
+
+			postDetailDTOList.add(PostDetailDTO.of(postInfo, profileInfo));
 		}
 
 		return new PageImpl<>(postDetailDTOList, pageable, postInfoList.getTotalElements());
@@ -57,8 +74,21 @@ public class PostService implements PostUseCase {
 		Pageable pageable = PageRequest.of(page, POSTS_PER_PAGE);
 		Page<PostInfo> postInfoList = postInfoRepository.findByUsernameOrderByIdDesc(username, pageable);
 
+		List<ProfileInfo> profileInfoList = profileInfoRepository.findByUsernameIn(
+				postInfoList.getContent().stream()
+						.map(postInfo -> postInfo.getUsername())
+						.collect(Collectors.toList())
+		);
+
 		for(PostInfo postInfo : postInfoList) {
-			postDetailDTOList.add(PostDetailDTO.of(postInfo));
+			Optional<ProfileInfo> optionalProfileInfo = profileInfoList.stream()
+					.filter(profileInfo -> profileInfo.getUsername() == postInfo.getUsername())
+					.findFirst();
+
+			ProfileInfo profileInfo = optionalProfileInfo
+					.orElseGet(ProfileInfo::new);
+
+			postDetailDTOList.add(PostDetailDTO.of(postInfo, profileInfo));
 		}
 
 		return new PageImpl<>(postDetailDTOList, pageable, postInfoList.getTotalElements());
@@ -67,10 +97,17 @@ public class PostService implements PostUseCase {
 	@Override
 	@Transactional
 	public Optional<PostDetailDTO> getPostDetailById(Long id) {
-		Optional<PostInfo> optionalPostDetail = postInfoRepository.findById(id);
+		Optional<PostInfo> optionalPostInfo = postInfoRepository.findById(id);
 
-		if(optionalPostDetail.isPresent()) {
-			return Optional.ofNullable(PostDetailDTO.of(optionalPostDetail.get()));
+
+		if(optionalPostInfo.isPresent()) {
+			PostInfo postInfo = optionalPostInfo.get();
+
+			Optional<ProfileInfo> optionalProfileInfo = profileInfoRepository.findByUsername(postInfo.getUsername());
+			ProfileInfo profileInfo = optionalProfileInfo
+					.orElseGet(ProfileInfo::new);
+
+			return Optional.ofNullable(PostDetailDTO.of(postInfo, profileInfo));
 		} else {
 			return Optional.empty();
 		}

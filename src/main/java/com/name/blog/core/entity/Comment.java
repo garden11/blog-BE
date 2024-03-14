@@ -17,10 +17,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 
 @NoArgsConstructor
 @Getter
 @Entity
+@Where(clause="delete_yn='N'")
 @Table(name = "comment")
 @DynamicInsert
 @DynamicUpdate

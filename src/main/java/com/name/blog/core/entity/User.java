@@ -77,8 +77,9 @@ public class User {
         this.refreshTokenExpiresAt = refreshTokenExpiresAt;
     }
 
-    public void updateRefreshToken(String refreshToken) {
+    public void updateRefreshToken(String refreshToken, Long refreshTokenExpiresAt) {
         this.refreshToken =  refreshToken;
+        this.refreshTokenExpiresAt = refreshTokenExpiresAt;
     }
 
     public void updateUser(UserRequestDTO userRequestDTO) {

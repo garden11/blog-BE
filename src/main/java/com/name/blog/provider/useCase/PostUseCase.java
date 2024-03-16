@@ -14,6 +14,8 @@ public interface PostUseCase {
 
     Page<PostDetailDTO> getPostDetailListByUsername(String username, Integer page);
 
+    Page<PostDetailDTO> getPostDetailListByTagId(Long PostTagId, Integer page);
+
     Optional<PostDetailDTO> getPostDetailById(Long id);
 
     Optional<PostDTO> getPostByPostId(Long id);

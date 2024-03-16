@@ -17,6 +17,7 @@ import java.util.Optional;
 
 import static com.name.blog.core.entity.QPost.post;
 import static com.name.blog.core.entity.QPostImage.postImage;
+import static com.name.blog.core.entity.QPostTag.postTag;
 
 
 @RequiredArgsConstructor
@@ -60,6 +61,28 @@ public class PostInfoRepositoryImpl implements PostInfoRepositoryCustom {
 
         Long totalCount = (long) selectPost()
                 .where(post.username.eq(username))
+                .fetch()
+                .size();
+
+        return new PageImpl<>(postInfoList, pageable, totalCount);
+    }
+
+    @Override
+    public Page<PostInfo> findByTagIdOrderByIdDesc(Long tagId, Pageable pageable) {
+
+        List<PostInfo> postInfoList = selectPostInfo()
+                .join(postTag)
+                .on(post.id.eq(postTag.postId))
+                .where(postTag.tagId.eq(tagId))
+                .orderBy(post.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        Long totalCount = (long) selectPost()
+                .join(postTag)
+                .on(post.id.eq(postTag.postId))
+                .where(postTag.tagId.eq(tagId))
                 .fetch()
                 .size();
 

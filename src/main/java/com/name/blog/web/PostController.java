@@ -63,4 +63,10 @@ public class PostController {
 			, @RequestParam(value="page", defaultValue="0") Integer page) {
 		return postService.getPostDetailListByUsername(username, page);
 	}
+
+	@GetMapping("/api/v1/tag/{tag-id}/post-details")
+	public Page<PostDetailDTO> getPostDetailsByPostTagId(@PathVariable("tag-id") Long tagId
+			, @RequestParam(value="page", defaultValue="0") Integer page) {
+		return postService.getPostDetailListByTagId(tagId, page);
+	}
 }

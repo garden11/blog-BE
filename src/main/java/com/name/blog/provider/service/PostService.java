@@ -95,6 +95,33 @@ public class PostService implements PostUseCase {
 	}
 
 	@Override
+	public Page<PostDetailDTO> getPostDetailListByTagId(Long PostTagId, Integer page) {
+		List<PostDetailDTO> postDetailDTOList = new ArrayList<>();
+
+		Pageable pageable = PageRequest.of(page, POSTS_PER_PAGE);
+		Page<PostInfo> postInfoList = postInfoRepository.findByTagIdOrderByIdDesc(PostTagId, pageable);
+
+		List<ProfileInfo> profileInfoList = profileInfoRepository.findByUsernameIn(
+				postInfoList.getContent().stream()
+						.map(postInfo -> postInfo.getUsername())
+						.collect(Collectors.toList())
+		);
+
+		for(PostInfo postInfo : postInfoList) {
+			Optional<ProfileInfo> optionalProfileInfo = profileInfoList.stream()
+					.filter(profileInfo -> profileInfo.getUsername() == postInfo.getUsername())
+					.findFirst();
+
+			ProfileInfo profileInfo = optionalProfileInfo
+					.orElseGet(ProfileInfo::new);
+
+			postDetailDTOList.add(PostDetailDTO.of(postInfo, profileInfo));
+		}
+
+		return new PageImpl<>(postDetailDTOList, pageable, postInfoList.getTotalElements());
+	}
+
+	@Override
 	@Transactional
 	public Optional<PostDetailDTO> getPostDetailById(Long id) {
 		Optional<PostInfo> optionalPostInfo = postInfoRepository.findById(id);

@@ -50,9 +50,11 @@ public class CommentService implements CommentUseCase {
 						.collect(Collectors.toList())
 		);
 
+
+
 		for(Comment comment : commentList) {
 			Optional<ProfileInfo> optionalProfileDetail = profileInfoList.stream()
-							.filter(profileDetail -> profileDetail.getUsername() == comment.getUsername())
+							.filter(profileDetail -> profileDetail.getUsername().equals(comment.getUsername()))
 							.findFirst();
 
 			ProfileInfo profileInfo = optionalProfileDetail

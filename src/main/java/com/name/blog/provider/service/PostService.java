@@ -63,7 +63,7 @@ public class PostService implements PostUseCase {
 
 		for(PostInfo postInfo : postInfoList) {
 			Optional<ProfileInfo> optionalProfileInfo = profileInfoList.stream()
-					.filter(profileInfo -> profileInfo.getUsername() == postInfo.getUsername())
+					.filter(profileInfo -> profileInfo.getUsername().equals(postInfo.getUsername()))
 					.findFirst();
 
 			ProfileInfo profileInfo = optionalProfileInfo
@@ -92,7 +92,7 @@ public class PostService implements PostUseCase {
 
 		for(PostInfo postInfo : postInfoList) {
 			Optional<ProfileInfo> optionalProfileInfo = profileInfoList.stream()
-					.filter(profileInfo -> profileInfo.getUsername() == postInfo.getUsername())
+					.filter(profileInfo -> profileInfo.getUsername().equals(postInfo.getUsername()))
 					.findFirst();
 
 			ProfileInfo profileInfo = optionalProfileInfo
@@ -119,7 +119,7 @@ public class PostService implements PostUseCase {
 
 		for(PostInfo postInfo : postInfoList) {
 			Optional<ProfileInfo> optionalProfileInfo = profileInfoList.stream()
-					.filter(profileInfo -> profileInfo.getUsername() == postInfo.getUsername())
+					.filter(profileInfo -> profileInfo.getUsername().equals(postInfo.getUsername()))
 					.findFirst();
 
 			ProfileInfo profileInfo = optionalProfileInfo

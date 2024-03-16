@@ -10,6 +10,9 @@ import java.util.List;
 @Repository
 public interface PostTagRepository extends JpaRepository<PostTag, Long>, PostTagRepositoryCustom {
     List<PostTag> findByPostId(Long postId);
-    void deleteByPostIdAndTagId(Long postId, Long tagId);
+    List<PostTag> findByPostIdIn(List<Long> postIdList);
+    void deleteByPostId(Long postId);
+    void deleteByPostIdIn(List<Long> postIdList);
+    void deleteByIdIn(List<Long> idList);
     boolean existsByTagId(Long tagId);
 }

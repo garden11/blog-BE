@@ -1,6 +1,7 @@
 package com.name.blog.core.repository.custom.impl;
 
 import com.name.blog.core.repository.custom.PostImageRepositoryCustom;
+import com.name.blog.util.DateUtil;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -17,11 +18,23 @@ public class PostImageRepositoryImpl implements PostImageRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Long updateNotUsingByPostId(Long postId) {
+    public Long updateNotUsingByPostId(Long postId, Long expiresAt) {
+
         return queryFactory
                 .update(postImage)
                 .set(postImage.useYN, "N")
+                .set(postImage.expiresAt, expiresAt)
                 .where(postImage.postId.eq(postId))
+                .execute();
+    }
+
+    @Override
+    public Long updateNotUsingByPostIdIn(List<Long> postIdList, Long expiresAt) {
+        return queryFactory
+                .update(postImage)
+                .set(postImage.useYN, "N")
+                .set(postImage.expiresAt, expiresAt)
+                .where(postImage.postId.in(postIdList))
                 .execute();
     }
 
@@ -30,6 +43,7 @@ public class PostImageRepositoryImpl implements PostImageRepositoryCustom {
         return queryFactory
                 .update(postImage)
                 .set(postImage.useYN, "Y")
+                .setNull(postImage.expiresAt)
                 .where(postImage.postId.eq(postId).and(postImage.uri.in(uriList)))
                 .execute();
     }

@@ -1,11 +1,14 @@
 package com.name.blog.provider.service;
 
 import java.io.IOException;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.name.blog.constants.Retentions;
+import com.name.blog.util.DateUtil;
 import jakarta.transaction.Transactional;
 
 import com.name.blog.provider.useCase.ProfileImageUseCase;
@@ -26,6 +29,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ProfileImageService implements ProfileImageUseCase {
+	private final DateUtil dateUtil = new DateUtil();
+
 	// 로컬 저장소 사용 시 주석 해제
 	private final LocalFileUploader localFileUploader;
 	// AWS 사용 시 주석 해제
@@ -45,7 +50,11 @@ public class ProfileImageService implements ProfileImageUseCase {
 	@Override
 	@Transactional
 	public ProfileImageDTO createProfileImage(ProfileImageRequestDTO profileImageRequestDTO) {
-		profileImageRepository.updateNotUsingByProfileId(Long.valueOf(profileImageRequestDTO.getProfileId()));
+
+		Long profileId = Long.valueOf(profileImageRequestDTO.getProfileId());
+		Long expiresAt = dateUtil.createEpochSecondPlus(Retentions.PROFILE_IMAGE_DAYS.getValue(), ChronoUnit.DAYS);
+
+		profileImageRepository.updateNotUsingByProfileId(profileId, expiresAt);
 
 		// AWS 사용 시 주석 해제
 //		Map<String, Object> uploadedFileInfo = s3FileUploader.uploadFile(profileImageRequestDTO.getImage());

@@ -7,7 +7,7 @@ import com.name.blog.core.repository.PostTagInfoRepository;
 import com.name.blog.core.repository.PostTagRepository;
 import com.name.blog.core.repository.TagRepository;
 import com.name.blog.provider.dto.PostTagDetailDTO;
-import com.name.blog.provider.eventListener.event.PostTagDeletedEvent;
+import com.name.blog.provider.eventListener.event.PostTagsDeletedEvent;
 import com.name.blog.provider.useCase.PostTagUseCase;
 import com.name.blog.web.dto.PostTagListRequestDTO;
 import jakarta.transaction.Transactional;
@@ -52,21 +52,22 @@ public class PostTagService implements PostTagUseCase {
         Long postId = postTagListRequestDTO.getPostId();
         List<PostTagInfo> postTagInfoList = postTagInfoRepository.findByPostId(postId);
 
-        List<String> newTagList = postTagListRequestDTO.getTagList();
+        List<String> newTagNameList = postTagListRequestDTO.getTagList();
 
-        for(String newTag : newTagList) {
-            List<String> tagList = postTagInfoList.stream()
-                    .map(postTagInfo -> {
-                        return postTagInfo.getTagName();
-                    })
-                    .collect(Collectors.toList());
 
-            boolean isAdded = !tagList.contains(newTag);
+        for(String newTagName : newTagNameList) {
+            List<String> tagNameList = new ArrayList<>();
+
+            for(PostTagInfo postTagInfo : postTagInfoList) {
+                tagNameList.add(postTagInfo.getTagName());
+            }
+
+            boolean isAdded = !tagNameList.contains(newTagName);
 
             if(isAdded) {
-                Optional<Tag> optionalTag = tagRepository.findByName(newTag);
+                Optional<Tag> optionalTag = tagRepository.findByName(newTagName);
 
-                if(optionalTag.isPresent()) {
+                if (optionalTag.isPresent()) {
                     Tag tag = optionalTag.get();
 
                     postTagRepository.save(PostTag
@@ -77,7 +78,7 @@ public class PostTagService implements PostTagUseCase {
                 } else {
                     Tag tag = tagRepository.save(Tag
                             .builder()
-                                    .name(newTag)
+                            .name(newTagName)
                             .build());
 
                     postTagRepository.save(PostTag
@@ -89,15 +90,19 @@ public class PostTagService implements PostTagUseCase {
             }
         };
 
+        List<Long> deletedPostTagIdList = new ArrayList<>();
+        List<Long> deletedPostTagTagIdList = new ArrayList<>();
+
         for(PostTagInfo postTagInfo : postTagInfoList) {
-            boolean isDeleted = !newTagList.contains(postTagInfo.getTagName());
+            boolean isDeleted = !newTagNameList.contains(postTagInfo.getTagName());
 
             if(isDeleted) {
-                Long tagId = postTagInfo.getTagId();
-
-                postTagRepository.deleteByPostIdAndTagId(postId, tagId);
-                eventPublisher.publishEvent(new PostTagDeletedEvent(this, tagId));
+                deletedPostTagIdList.add(postTagInfo.getId());
+                deletedPostTagTagIdList.add(postTagInfo.getTagId());
             }
         };
+
+        postTagRepository.deleteByIdIn(deletedPostTagIdList);
+        eventPublisher.publishEvent(new PostTagsDeletedEvent(this, deletedPostTagTagIdList));
     }
 }

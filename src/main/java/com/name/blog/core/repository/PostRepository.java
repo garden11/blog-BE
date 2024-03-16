@@ -9,7 +9,10 @@ import org.springframework.stereotype.Repository;
 
 import com.name.blog.core.entity.Post;
 
+import java.util.List;
+
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long>, PostRepositoryCustom {
+	List<Post> findByUsername(String username);
 	boolean existsByUsernameAndId(String username, Long id);
 }	

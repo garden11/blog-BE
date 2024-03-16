@@ -83,4 +83,12 @@ public class Post {
     public void registerPost() {
         this.registerYN = "Y";
     }
+
+    public void setExpiresAt(Long expiresAt) {
+        this.expiresAt = expiresAt;
+    }
+
+    public void unsetExpiresAt() {
+        this.expiresAt = null;
+    }
 }

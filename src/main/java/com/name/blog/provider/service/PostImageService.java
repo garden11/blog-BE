@@ -1,8 +1,11 @@
 package com.name.blog.provider.service;
 
 import java.io.IOException;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
+import com.name.blog.constants.Retentions;
+import com.name.blog.util.DateUtil;
 import jakarta.transaction.Transactional;
 
 import com.name.blog.provider.useCase.PostImageUseCase;
@@ -23,6 +26,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class PostImageService implements PostImageUseCase {
+	private final DateUtil dateUtil = new DateUtil();
+
 	// 로컬 저장소 사용 시 주석 해제
 	private final LocalFileUploader localFileUploader;
 	// AWS 사용 시 주석 해제
@@ -43,6 +48,8 @@ public class PostImageService implements PostImageUseCase {
 	@Override
 	@Transactional
 	public PostImageDTO createPostImage(PostImageRequestDTO postImageRequestDTO) {
+		Long expiresAt = dateUtil.createEpochSecondPlus(Retentions.POST_IMAGE_DAYS.getValue(), ChronoUnit.DAYS);
+
 		// AWS 사용 시 주석 해제
 //		Map<String, Object> uploadedFileInfo = s3FileUploader.uploadFile(postImageRequestDTO.getImage());
 //
@@ -51,6 +58,7 @@ public class PostImageService implements PostImageUseCase {
 //				.uri(uploadedFileInfo.get(s3FileUploader.URI_KEY).toString())
 //				.originalName(uploadedFileInfo.get(s3FileUploader.ORIGINAL_FILE_NAME_KEY).toString())
 //				.name(uploadedFileInfo.get(s3FileUploader.FILE_NAME_KEY).toString())
+//				.expiresAt(expiresAt)
 //				.build()
 //		));
 
@@ -67,6 +75,7 @@ public class PostImageService implements PostImageUseCase {
 				.uri(domainUri + uploadedFileInfo.get(localFileUploader.URI_KEY).toString())
 				.originalName(uploadedFileInfo.get(localFileUploader.ORIGINAL_FILE_NAME_KEY).toString())
 				.name(uploadedFileInfo.get(localFileUploader.CHANGED_FILE_NAME_KEY).toString())
+				.expiresAt(expiresAt)
 				.build()));
 
 		return postImageDTO;

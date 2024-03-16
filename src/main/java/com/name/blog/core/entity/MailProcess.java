@@ -42,8 +42,9 @@ public class MailProcess {
     private Long expiresAt;
 
     @Builder
-    public MailProcess(String email, String processToken) {
+    public MailProcess(String email, String processToken, Long expiresAt) {
         this.email = email;
         this.processToken = processToken;
+        this.expiresAt = expiresAt;
     }
 }

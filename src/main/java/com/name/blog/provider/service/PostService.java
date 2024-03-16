@@ -1,14 +1,18 @@
 package com.name.blog.provider.service;
 
+import com.name.blog.constants.Retentions;
 import com.name.blog.core.entity.PostInfo;
 import com.name.blog.core.entity.ProfileInfo;
 import com.name.blog.core.repository.PostInfoRepository;
 import com.name.blog.core.repository.ProfileInfoRepository;
 import com.name.blog.provider.dto.PostDetailDTO;
+import com.name.blog.provider.eventListener.event.PostDeletedEvent;
+import com.name.blog.util.DateUtil;
 import jakarta.transaction.Transactional;
 
 import com.name.blog.core.repository.PostImageRepository;
 import com.name.blog.provider.useCase.PostUseCase;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +26,7 @@ import com.name.blog.web.dto.PostRequestDTO;
 
 import lombok.RequiredArgsConstructor;
 
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,12 +35,17 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PostService implements PostUseCase {
-	private static final Integer POSTS_PER_PAGE = 5;
+
+	private final ApplicationEventPublisher eventPublisher;
 
 	private final PostRepository postRepository;
 	private final PostInfoRepository postInfoRepository;
 	private final PostImageRepository postImageRepository;
 	private final ProfileInfoRepository profileInfoRepository;
+
+	private static final Integer POSTS_PER_PAGE = 5;
+
+	private final DateUtil dateUtil = new DateUtil();
 
 	@Override
 	@Transactional
@@ -155,7 +165,10 @@ public class PostService implements PostUseCase {
 	@Override
 	@Transactional
 	public PostDTO createPost(PostRequestDTO postRequestDTO) {
+		Long expiresAt = dateUtil.createEpochSecondPlus(Retentions.POST_DAYS.getValue(), ChronoUnit.DAYS);
+
 		Post post = postRequestDTO.toEntity();
+		post.setExpiresAt(expiresAt);
 
 		return PostDTO.of(postRepository.save(post));
 	}
@@ -165,13 +178,16 @@ public class PostService implements PostUseCase {
 	public PostDTO updatePostById(Long id, PostRequestDTO postRequestDTO) {
 		Post post = postRepository.findById(id).orElseThrow();
 
-		postImageRepository.updateNotUsingByPostId(id);
+		Long expiresAt = dateUtil.createEpochSecondPlus(Retentions.POST_IMAGE_DAYS.getValue(), ChronoUnit.DAYS);
+
+		postImageRepository.updateNotUsingByPostId(id, expiresAt);
 		postImageRepository.updateUsingByPostIdAndUriIn(id, postRequestDTO.getImageUriList());
 		
 		post.updatePost(postRequestDTO);
 
 		if(post.getRegisterYN().equals("N")) {
 			post.registerPost();
+			post.unsetExpiresAt();
 		}
 
 		return PostDTO.of(postRepository.save(post));
@@ -180,9 +196,13 @@ public class PostService implements PostUseCase {
 	@Override
 	@Transactional
 	public void deletePostById(Long id) {
+
+		Long expiresAt = dateUtil.createEpochSecondPlus(Retentions.POST_DAYS.getValue(), ChronoUnit.DAYS);
+
 		Post post = postRepository.findById(id).orElseThrow();
 
-		postRepository.updateDeletingById(post.getId());
+		postRepository.updateDeletingById(post.getId(), expiresAt);
+		eventPublisher.publishEvent(new PostDeletedEvent(this, post.getId()));
 	}
 
 	@Override

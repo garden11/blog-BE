@@ -1,8 +1,10 @@
 package com.name.blog.provider.service;
 
+import com.name.blog.constants.Retentions;
 import com.name.blog.core.entity.ProfileInfo;
 import com.name.blog.core.repository.ProfileInfoRepository;
 import com.name.blog.provider.dto.CommentDetailDTO;
+import com.name.blog.util.DateUtil;
 import jakarta.transaction.Transactional;
 
 import com.name.blog.provider.useCase.CommentUseCase;
@@ -19,6 +21,7 @@ import com.name.blog.web.dto.CommentRequestDTO;
 
 import lombok.RequiredArgsConstructor;
 
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,9 +30,12 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CommentService implements CommentUseCase {
+
 	private final ProfileInfoRepository profileInfoRepository;
 	private final CommentRepository commentRepository;
 	private final Integer COMMENTS_PER_PAGE = 5;
+
+	private final DateUtil dateUtil= new DateUtil();
 
 	@Override
 	@Transactional
@@ -72,7 +78,10 @@ public class CommentService implements CommentUseCase {
 	@Override
 	@Transactional
 	public void deleteCommentById(Long id) {
+		Long expiresAt = dateUtil.createEpochSecondPlus(Retentions.COMMENT_DAYS.getValue(), ChronoUnit.DAYS);
+
 		Comment comment = commentRepository.findById(id).orElseThrow();
-		commentRepository.updateDeletingById(comment.getId());
+		commentRepository
+				.updateDeletingById(comment.getId(), expiresAt);
 	}
 }

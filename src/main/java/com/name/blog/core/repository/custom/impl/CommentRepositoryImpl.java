@@ -13,12 +13,24 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Long updateDeletingById(Long id) {
+    public Long updateDeletingById(Long id, Long expiresAt) {
 
         return queryFactory
                 .update(comment)
                 .set(comment.deleteYN, "Y")
+                .set(comment.expiresAt, expiresAt)
                 .where(comment.id.eq(id))
+                .execute();
+    }
+
+    @Override
+    public Long updateDeletingByUsername(String username, Long expiresAt) {
+
+        return queryFactory
+                .update(comment)
+                .set(comment.deleteYN, "Y")
+                .set(comment.expiresAt, expiresAt)
+                .where(comment.username.eq(username))
                 .execute();
     }
 }

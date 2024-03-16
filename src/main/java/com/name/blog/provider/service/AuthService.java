@@ -10,12 +10,14 @@ import com.name.blog.core.repository.UserRepository;
 import com.name.blog.core.security.Role;
 import com.name.blog.exception.*;
 import com.name.blog.provider.dto.UserDTO;
+import com.name.blog.provider.eventListener.event.WithdrawalEvent;
 import com.name.blog.provider.security.*;
 import com.name.blog.provider.useCase.AuthUseCase;
 import com.name.blog.util.DateUtil;
 import com.name.blog.util.EmailSender;
 import com.name.blog.web.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,8 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class AuthService implements AuthUseCase {
+    private final ApplicationEventPublisher eventPublisher;
+
     private static final String USER_INFO_KEY = "userInfo";
     private static final String AUTH_TOKENS_KEY = "tokens";
     private static final String ACCESS_TOKEN_KEY = "accessToken";
@@ -163,7 +167,9 @@ public class AuthService implements AuthUseCase {
             }
 
             User user = optionalUser.get();
+
             userRepository.updateDeletingById(user.getId());
+            eventPublisher.publishEvent(new WithdrawalEvent(this, user.getUsername()));
         } catch(Exception error) {
             error.printStackTrace();
 
@@ -245,9 +251,12 @@ public class AuthService implements AuthUseCase {
 
             mailProcessRepository.updateProcessingByEmail(emailRequestDTO.getTo());
 
+            Long expiresAt = dateUtil.createEpochSecondPlus(Retentions.MAIL_PROCESS_MINUTES.getValue(), ChronoUnit.MINUTES);
+
             MailProcess mailProcess = MailProcess.builder()
                     .email(emailRequestDTO.getTo())
                     .processToken(processToken.getToken())
+                    .expiresAt(expiresAt)
                     .build();
 
             mailProcessRepository.save(mailProcess);

@@ -17,11 +17,12 @@ public class ProfileImageRepositoryImpl implements ProfileImageRepositoryCustom 
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Long updateNotUsingByProfileId(Long profileId) {
+    public Long updateNotUsingByProfileId(Long profileId, Long expiresAt) {
 
         return queryFactory
                 .update(profileImage)
                 .set(profileImage.useYN, "N")
+                .set(profileImage.expiresAt, expiresAt)
                 .where(profileImage.profileId.eq(profileId))
                 .execute();
     }

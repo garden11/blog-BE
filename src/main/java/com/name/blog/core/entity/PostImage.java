@@ -59,10 +59,11 @@ public class PostImage {
 	private Long expiresAt;
 	
     @Builder
-    public PostImage(Long postId, String uri, String originalName, String name) {
+    public PostImage(Long postId, String uri, String originalName, String name, Long expiresAt) {
     	this.postId = postId;
         this.uri = uri;
         this.originalName = originalName;
         this.name = name;
+		this.expiresAt = expiresAt;
     }
 }

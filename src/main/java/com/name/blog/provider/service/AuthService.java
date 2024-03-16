@@ -1,6 +1,6 @@
 package com.name.blog.provider.service;
 
-import com.name.blog.constants.Retention;
+import com.name.blog.constants.Retentions;
 import com.name.blog.core.entity.MailProcess;
 import com.name.blog.core.entity.Profile;
 import com.name.blog.core.entity.User;
@@ -70,7 +70,7 @@ public class AuthService implements AuthUseCase {
 
             Date accessTokenExpiredDate = accessToken.getExpiredDate();
             Long accessTokenExpiresAt = dateUtil.convertToEpochSecond(accessTokenExpiredDate);
-            Date refreshTokenExpiredDate = dateUtil.createUTCDatePlus(Retention.REFRESH_TOKEN_DAYS.getValue(), ChronoUnit.DAYS);
+            Date refreshTokenExpiredDate = dateUtil.createUTCDatePlus(Retentions.REFRESH_TOKEN_DAYS.getValue(), ChronoUnit.DAYS);
             Long refreshTokenExpiresAt = dateUtil.convertToEpochSecond(refreshTokenExpiredDate);
 
             user.updateRefreshToken(refreshToken.getToken(), refreshTokenExpiresAt);
@@ -133,7 +133,7 @@ public class AuthService implements AuthUseCase {
             AccessToken newAccessToken = accessTokenProvider.createToken(user.getUsername(), Role.of(user.getRole()));
             RefreshToken newRefreshToken = refreshTokenProvider.createToken();
 
-            Date refreshTokenExpiredDate = dateUtil.createUTCDatePlus(Retention.REFRESH_TOKEN_DAYS.getValue(),ChronoUnit.DAYS);
+            Date refreshTokenExpiredDate = dateUtil.createUTCDatePlus(Retentions.REFRESH_TOKEN_DAYS.getValue(),ChronoUnit.DAYS);
             Long refreshTokenExpiresAt = dateUtil.convertToEpochSecond(refreshTokenExpiredDate);
 
             user.updateRefreshToken(newRefreshToken.getToken(), refreshTokenExpiresAt);

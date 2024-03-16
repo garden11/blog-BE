@@ -4,7 +4,7 @@ import java.security.Key;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
-import com.name.blog.constants.Retention;
+import com.name.blog.constants.Retentions;
 import com.name.blog.core.security.Role;
 import com.name.blog.exception.CustomAccessTokenRuntimeException;
 
@@ -84,6 +84,6 @@ public class AccessToken implements com.name.blog.core.security.AccessToken {
 
 
     private Date createExpiredDate() {
-        return dateUtil.createUTCDatePlus(Retention.ACCESS_TOKEN_MINUTES.getValue(), ChronoUnit.MINUTES);
+        return dateUtil.createUTCDatePlus(Retentions.ACCESS_TOKEN_MINUTES.getValue(), ChronoUnit.MINUTES);
     }
 }

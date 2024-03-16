@@ -5,7 +5,7 @@ import com.querydsl.core.Tuple;
 import java.util.List;
 
 public interface ProfileImageRepositoryCustom {
-    Long updateNotUsingByIdIn(List<Long> idList);
+    Long updateNotUsingByProfileId(Long profileId);
     List<Tuple> findIdAndNameListByIdExpired(Long id);
     Long deleteByIdIn(List<Long>idList);
 }

@@ -17,12 +17,12 @@ public class ProfileImageRepositoryImpl implements ProfileImageRepositoryCustom 
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Long updateNotUsingByIdIn(List<Long> idList) {
+    public Long updateNotUsingByProfileId(Long profileId) {
 
         return queryFactory
                 .update(profileImage)
                 .set(profileImage.useYN, "N")
-                .where(profileImage.id.in(idList))
+                .where(profileImage.profileId.eq(profileId))
                 .execute();
     }
 

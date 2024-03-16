@@ -45,14 +45,7 @@ public class ProfileImageService implements ProfileImageUseCase {
 	@Override
 	@Transactional
 	public ProfileImageDTO createProfileImage(ProfileImageRequestDTO profileImageRequestDTO) {
-		List<ProfileImage> profileImageList= profileImageRepository.findByProfileId(Long.valueOf(profileImageRequestDTO.getProfileId()));
-		List<Long> profileImageIdList = new ArrayList();
-
-		for (ProfileImage profileImage : profileImageList) {
-			profileImageIdList.add(profileImage.getId());
-		}
-
-		profileImageRepository.updateNotUsingByIdIn(profileImageIdList);
+		profileImageRepository.updateNotUsingByProfileId(Long.valueOf(profileImageRequestDTO.getProfileId()));
 
 		// AWS 사용 시 주석 해제
 //		Map<String, Object> uploadedFileInfo = s3FileUploader.uploadFile(profileImageRequestDTO.getImage());

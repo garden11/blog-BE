@@ -11,6 +11,12 @@ public class DateUtil {
         return Date.from(nowInstant);
     }
 
+    public Long createEpochSecondPlus(Long addedAmount, ChronoUnit unit) {
+        Date date = createUTCDatePlus(addedAmount, unit);
+
+        return convertToEpochSecond(date);
+    }
+
     public Date createUTCDatePlus(Long addedAmount, ChronoUnit unit) {
         Instant nowInstant = Instant.now().truncatedTo(ChronoUnit.SECONDS);
         Instant plusInstant = nowInstant.plus(addedAmount, unit);

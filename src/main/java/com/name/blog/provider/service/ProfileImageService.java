@@ -16,9 +16,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 // 로컬 저장소 사용 시 주석 해제
-import com.name.blog.util.LocalFileUploader;
+//import com.name.blog.util.LocalFileUploader;
 // AWS 사용 시 주석 해제
-//import com.name.blog.util.S3FileUploader;
+import com.name.blog.util.S3FileUploader;
 import com.name.blog.core.entity.ProfileImage;
 import com.name.blog.core.repository.ProfileImageRepository;
 import com.name.blog.provider.dto.ProfileImageDTO;
@@ -31,21 +31,22 @@ import lombok.RequiredArgsConstructor;
 public class ProfileImageService implements ProfileImageUseCase {
 	private final DateUtil dateUtil = new DateUtil();
 
-	// 로컬 저장소 사용 시 주석 해제
-	private final LocalFileUploader localFileUploader;
-	// AWS 사용 시 주석 해제
-//	private final S3FileUploader s3FileUploader;
 	private final ProfileImageRepository profileImageRepository;
 
 	// 로컬 저장소 사용 시 주석 해제
-	@Value("${local.profile.image.file.upload.path}")
-	private String localProfileImageFileUploadPath;
-	
-	@Value("${local.profile.image.file.upload.handler.path}")
-	private String localProfileImageFileUploadHandlerPath;
+//	private final LocalFileUploader localFileUploader;
+	// AWS 사용 시 주석 해제
+	private final S3FileUploader s3FileUploader;
 
-	@Value("${domain.uri}")
-	private String domainUri;
+	// 로컬 저장소 사용 시 주석 해제
+//	@Value("${local.profile.image.file.upload.path}")
+//	private String localProfileImageFileUploadPath;
+//
+//	@Value("${local.profile.image.file.upload.handler.path}")
+//	private String localProfileImageFileUploadHandlerPath;
+//
+//	@Value("${domain.uri}")
+//	private String domainUri;
 
 	@Override
 	@Transactional
@@ -57,31 +58,31 @@ public class ProfileImageService implements ProfileImageUseCase {
 		profileImageRepository.updateNotUsingByProfileId(profileId, expiresAt);
 
 		// AWS 사용 시 주석 해제
-//		Map<String, Object> uploadedFileInfo = s3FileUploader.uploadFile(profileImageRequestDTO.getImage());
-//
-//		ProfileImageDTO profileImageDTO = ProfileImageDTO.of(profileImageRepository.save(ProfileImage.builder()
-//				.profileId(Long.valueOf(profileImageRequestDTO.getProfileId()))
-//				.uri(uploadedFileInfo.get(s3FileUploader.URI_KEY).toString())
-//				.originalName(uploadedFileInfo.get(s3FileUploader.ORIGINAL_FILE_NAME_KEY).toString())
-//				.name(uploadedFileInfo.get(s3FileUploader.FILE_NAME_KEY).toString())
-//				.build()
-//		));
-
-		// 로컬 저장소 사용 시 주석 해제
-		Map<String, Object> uploadedFileInfo = null;
-		try {
-			uploadedFileInfo = localFileUploader.uploadFile(profileImageRequestDTO.getImage(), localProfileImageFileUploadPath, localProfileImageFileUploadHandlerPath);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		Map<String, Object> uploadedFileInfo = s3FileUploader.uploadFile(profileImageRequestDTO.getImage());
 
 		ProfileImageDTO profileImageDTO = ProfileImageDTO.of(profileImageRepository.save(ProfileImage.builder()
-			.profileId(Long.valueOf(profileImageRequestDTO.getProfileId()))
-			.uri(domainUri + uploadedFileInfo.get(localFileUploader.URI_KEY).toString())
-			.originalName(uploadedFileInfo.get(localFileUploader.ORIGINAL_FILE_NAME_KEY).toString())
-			.name(uploadedFileInfo.get(localFileUploader.CHANGED_FILE_NAME_KEY).toString())
-			.build()
-			));
+				.profileId(Long.valueOf(profileImageRequestDTO.getProfileId()))
+				.uri(uploadedFileInfo.get(s3FileUploader.URI_KEY).toString())
+				.originalName(uploadedFileInfo.get(s3FileUploader.ORIGINAL_FILE_NAME_KEY).toString())
+				.name(uploadedFileInfo.get(s3FileUploader.FILE_NAME_KEY).toString())
+				.build()
+		));
+
+		// 로컬 저장소 사용 시 주석 해제
+//		Map<String, Object> uploadedFileInfo = null;
+//		try {
+//			uploadedFileInfo = localFileUploader.uploadFile(profileImageRequestDTO.getImage(), localProfileImageFileUploadPath, localProfileImageFileUploadHandlerPath);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//
+//		ProfileImageDTO profileImageDTO = ProfileImageDTO.of(profileImageRepository.save(ProfileImage.builder()
+//			.profileId(Long.valueOf(profileImageRequestDTO.getProfileId()))
+//			.uri(domainUri + uploadedFileInfo.get(localFileUploader.URI_KEY).toString())
+//			.originalName(uploadedFileInfo.get(localFileUploader.ORIGINAL_FILE_NAME_KEY).toString())
+//			.name(uploadedFileInfo.get(localFileUploader.CHANGED_FILE_NAME_KEY).toString())
+//			.build()
+//			));
 
 		return profileImageDTO;
 	}

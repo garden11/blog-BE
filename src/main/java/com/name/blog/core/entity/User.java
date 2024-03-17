@@ -1,17 +1,17 @@
 package com.name.blog.core.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.name.blog.core.security.Role;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import com.name.blog.web.dto.UserRequestDTO;
 import lombok.Builder;
@@ -77,8 +77,9 @@ public class User {
         this.refreshTokenExpiresAt = refreshTokenExpiresAt;
     }
 
-    public void updateRefreshToken(String refreshToken) {
+    public void updateRefreshToken(String refreshToken, Long refreshTokenExpiresAt) {
         this.refreshToken =  refreshToken;
+        this.refreshTokenExpiresAt = refreshTokenExpiresAt;
     }
 
     public void updateUser(UserRequestDTO userRequestDTO) {

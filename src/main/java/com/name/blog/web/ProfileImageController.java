@@ -25,6 +25,6 @@ public class ProfileImageController {
 	@PostMapping("/api/v1/profile-image")
 	@Auth(roles = {Role.USER})
 	public ProfileImageDTO createProfileImage(ProfileImageRequestDTO profileImageRequestDTO) {
-		return profileImageService.insertProfileImage(profileImageRequestDTO);
+		return profileImageService.createProfileImage(profileImageRequestDTO);
 	}
 }

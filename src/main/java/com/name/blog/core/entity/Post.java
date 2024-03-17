@@ -1,13 +1,13 @@
 package com.name.blog.core.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -31,9 +31,6 @@ public class Post {
     @Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	@Column(name = "category_id")
-	private Long categoryId;
 
     @NotNull
     @Column(name = "username")
@@ -76,7 +73,6 @@ public class Post {
     }
 
     public void updatePost(PostRequestDTO postRequestDTO) {
-        this.categoryId = Long.valueOf(postRequestDTO.getCategoryId());
         this.title = postRequestDTO.getTitle();
         this.content = postRequestDTO.getContent();
 
@@ -86,5 +82,13 @@ public class Post {
 
     public void registerPost() {
         this.registerYN = "Y";
+    }
+
+    public void setExpiresAt(Long expiresAt) {
+        this.expiresAt = expiresAt;
+    }
+
+    public void unsetExpiresAt() {
+        this.expiresAt = null;
     }
 }

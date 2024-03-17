@@ -1,5 +1,6 @@
 package com.name.blog.provider.service;
 
+import com.name.blog.constants.Retentions;
 import com.name.blog.core.entity.MailProcess;
 import com.name.blog.core.entity.Profile;
 import com.name.blog.core.entity.User;
@@ -9,16 +10,21 @@ import com.name.blog.core.repository.UserRepository;
 import com.name.blog.core.security.Role;
 import com.name.blog.exception.*;
 import com.name.blog.provider.dto.UserDTO;
+import com.name.blog.provider.eventListener.event.WithdrawalEvent;
 import com.name.blog.provider.security.*;
 import com.name.blog.provider.useCase.AuthUseCase;
 import com.name.blog.util.DateUtil;
 import com.name.blog.util.EmailSender;
 import com.name.blog.web.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
+
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -26,6 +32,8 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class AuthService implements AuthUseCase {
+    private final ApplicationEventPublisher eventPublisher;
+
     private static final String USER_INFO_KEY = "userInfo";
     private static final String AUTH_TOKENS_KEY = "tokens";
     private static final String ACCESS_TOKEN_KEY = "accessToken";
@@ -64,13 +72,18 @@ public class AuthService implements AuthUseCase {
             AccessToken accessToken = accessTokenProvider.createToken(user.getUsername(), Role.of(user.getRole()));
             RefreshToken refreshToken = refreshTokenProvider.createToken();
 
-            user.updateRefreshToken(refreshToken.getToken());
+            Date accessTokenExpiredDate = accessToken.getExpiredDate();
+            Long accessTokenExpiresAt = dateUtil.convertToEpochSecond(accessTokenExpiredDate);
+            Date refreshTokenExpiredDate = dateUtil.createUTCDatePlus(Retentions.REFRESH_TOKEN_DAYS.getValue(), ChronoUnit.DAYS);
+            Long refreshTokenExpiresAt = dateUtil.convertToEpochSecond(refreshTokenExpiredDate);
+
+            user.updateRefreshToken(refreshToken.getToken(), refreshTokenExpiresAt);
 
             UserDTO userDTO = UserDTO.of(userRepository.save(user));
 
             Map<String, Object> authTokens = new HashMap<>();
             authTokens.put(ACCESS_TOKEN_KEY, accessToken.getToken());
-            authTokens.put(ACCESS_TOKEN_EXPIRES_AT_KEY, String.valueOf(dateUtil.convertToEpochSecond(accessToken.getExpiredDate())));
+            authTokens.put(ACCESS_TOKEN_EXPIRES_AT_KEY, String.valueOf(accessTokenExpiresAt));
             authTokens.put(REFRESH_TOKEN_KEY, user.getRefreshToken());
 
             response.put(USER_INFO_KEY, userDTO);
@@ -124,7 +137,10 @@ public class AuthService implements AuthUseCase {
             AccessToken newAccessToken = accessTokenProvider.createToken(user.getUsername(), Role.of(user.getRole()));
             RefreshToken newRefreshToken = refreshTokenProvider.createToken();
 
-            user.updateRefreshToken(newRefreshToken.getToken());
+            Date refreshTokenExpiredDate = dateUtil.createUTCDatePlus(Retentions.REFRESH_TOKEN_DAYS.getValue(),ChronoUnit.DAYS);
+            Long refreshTokenExpiresAt = dateUtil.convertToEpochSecond(refreshTokenExpiredDate);
+
+            user.updateRefreshToken(newRefreshToken.getToken(), refreshTokenExpiresAt);
 
             userRepository.save(user);
 
@@ -151,7 +167,9 @@ public class AuthService implements AuthUseCase {
             }
 
             User user = optionalUser.get();
-            userRepository.updateDeleteYById(user.getId());
+
+            userRepository.updateDeletingById(user.getId());
+            eventPublisher.publishEvent(new WithdrawalEvent(this, user.getUsername()));
         } catch(Exception error) {
             error.printStackTrace();
 
@@ -217,7 +235,7 @@ public class AuthService implements AuthUseCase {
             user.updatePassword(encoder.encode(resetPasswordRequestDTO.getNewPassword()));
             userRepository.save(user);
 
-            mailProcessRepository.updateProcessYById(mailProcess.getId());
+            mailProcessRepository.updateProcessingById(mailProcess.getId());
         } catch (Exception error) {
             error.printStackTrace();
 
@@ -231,11 +249,14 @@ public class AuthService implements AuthUseCase {
         try {
             ProcessToken processToken = processTokenProvider.convertToToken(emailRequestDTO.getProcessToken());
 
-            mailProcessRepository.updateAllProcessYByEmail(emailRequestDTO.getTo());
+            mailProcessRepository.updateProcessingByEmail(emailRequestDTO.getTo());
+
+            Long expiresAt = dateUtil.createEpochSecondPlus(Retentions.MAIL_PROCESS_MINUTES.getValue(), ChronoUnit.MINUTES);
 
             MailProcess mailProcess = MailProcess.builder()
                     .email(emailRequestDTO.getTo())
                     .processToken(processToken.getToken())
+                    .expiresAt(expiresAt)
                     .build();
 
             mailProcessRepository.save(mailProcess);

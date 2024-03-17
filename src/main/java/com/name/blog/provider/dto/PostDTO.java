@@ -10,7 +10,6 @@ import lombok.Getter;
 @Builder
 public class PostDTO {
 	private String id;
-	private String categoryId;
 	private String username;
 	private String title;
 	private String content;
@@ -24,7 +23,6 @@ public class PostDTO {
     public static PostDTO of(Post post) {
         return PostDTO.builder()
                 .id(responseUtil.handleValue(post.getId()))
-                .categoryId(responseUtil.handleValue(post.getCategoryId()))
                 .username(responseUtil.handleValue(post.getUsername()))
                 .title(responseUtil.handleValue(post.getTitle()))
                 .content(responseUtil.handleValue(post.getContent()))

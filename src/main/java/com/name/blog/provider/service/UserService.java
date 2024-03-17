@@ -2,7 +2,7 @@ package com.name.blog.provider.service;
 
 import java.util.Optional;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.name.blog.exception.UserUpdateFailedException;
 import com.name.blog.provider.useCase.UserUseCase;
@@ -22,7 +22,7 @@ public class UserService implements UserUseCase {
 
 	@Override
 	@Transactional
-	public Optional<UserDTO> selectUserByUsername (String username) {
+	public Optional<UserDTO> getUserByUsername (String username) {
 		Optional<User> optionalUser = userRepository.findByUsername(username);
 
 		if(optionalUser.isPresent()) {

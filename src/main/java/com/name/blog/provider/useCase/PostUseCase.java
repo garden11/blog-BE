@@ -1,24 +1,30 @@
 package com.name.blog.provider.useCase;
 
 import com.name.blog.provider.dto.PostDTO;
+import com.name.blog.provider.dto.PostDetailDTO;
 import com.name.blog.web.dto.PostRequestDTO;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+
 import java.util.Optional;
 
 public interface PostUseCase {
-    @Transactional
-    Optional<PostDTO> selectPostByPostId(Long id);
+    Page<PostDetailDTO> getPostDetailList(Integer page);
 
-    @Transactional
-    PostDTO insertPost(PostRequestDTO postRequestDTO);
+    Page<PostDetailDTO> getPostDetailListByUsername(String username, Integer page);
 
-    @Transactional
+    Page<PostDetailDTO> getPostDetailListByTagId(Long PostTagId, Integer page);
+
+    Optional<PostDetailDTO> getPostDetailById(Long id);
+
+    Optional<PostDTO> getPostByPostId(Long id);
+
+    PostDTO createPost(PostRequestDTO postRequestDTO);
+
     PostDTO updatePostById(Long id, PostRequestDTO postRequestDTO);
 
-    @Transactional
     void deletePostById(Long id);
 
-    @Transactional
     boolean isValidPost(String username, Long id);
 }

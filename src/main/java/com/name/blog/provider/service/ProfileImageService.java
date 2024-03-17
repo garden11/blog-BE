@@ -1,11 +1,15 @@
 package com.name.blog.provider.service;
 
+import java.io.IOException;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
+import com.name.blog.constants.Retentions;
+import com.name.blog.util.DateUtil;
+import jakarta.transaction.Transactional;
 
 import com.name.blog.provider.useCase.ProfileImageUseCase;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,29 +29,33 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ProfileImageService implements ProfileImageUseCase {
+	private final DateUtil dateUtil = new DateUtil();
+
+	private final ProfileImageRepository profileImageRepository;
+
 	// 로컬 저장소 사용 시 주석 해제
 //	private final LocalFileUploader localFileUploader;
 	// AWS 사용 시 주석 해제
 	private final S3FileUploader s3FileUploader;
-	private final ProfileImageRepository profileImageRepository;
 
-	@Value("${local.profile.image.file.upload.path}")
-	private String localProfileImageFileUploadPath;
-	
-	@Value("${local.profile.image.file.upload.handler.path}")
-	private String localProfileImageFileUploadHandlerPath;
+	// 로컬 저장소 사용 시 주석 해제
+//	@Value("${local.profile.image.file.upload.path}")
+//	private String localProfileImageFileUploadPath;
+//
+//	@Value("${local.profile.image.file.upload.handler.path}")
+//	private String localProfileImageFileUploadHandlerPath;
+//
+//	@Value("${domain.uri}")
+//	private String domainUri;
 
 	@Override
 	@Transactional
-	public ProfileImageDTO insertProfileImage(ProfileImageRequestDTO profileImageRequestDTO) {
-		List<ProfileImage> profileImageList= profileImageRepository.findByProfileId(Long.valueOf(profileImageRequestDTO.getProfileId()));
-		List<Long> profileImageIdList = new ArrayList();
+	public ProfileImageDTO createProfileImage(ProfileImageRequestDTO profileImageRequestDTO) {
 
-		for (ProfileImage profileImage : profileImageList) {
-			profileImageIdList.add(profileImage.getId());
-		}
+		Long profileId = Long.valueOf(profileImageRequestDTO.getProfileId());
+		Long expiresAt = dateUtil.createEpochSecondPlus(Retentions.PROFILE_IMAGE_DAYS.getValue(), ChronoUnit.DAYS);
 
-		profileImageRepository.updateAllUseNByIdIn(profileImageIdList);
+		profileImageRepository.updateNotUsingByProfileId(profileId, expiresAt);
 
 		// AWS 사용 시 주석 해제
 		Map<String, Object> uploadedFileInfo = s3FileUploader.uploadFile(profileImageRequestDTO.getImage());
@@ -61,11 +69,16 @@ public class ProfileImageService implements ProfileImageUseCase {
 		));
 
 		// 로컬 저장소 사용 시 주석 해제
-//		Map<String, Object> uploadedFileInfo = localFileUploader.uploadFile(profileImageRequestDTO.getImage(), localProfileImageFileUploadPath, localProfileImageFileUploadHandlerPath);
+//		Map<String, Object> uploadedFileInfo = null;
+//		try {
+//			uploadedFileInfo = localFileUploader.uploadFile(profileImageRequestDTO.getImage(), localProfileImageFileUploadPath, localProfileImageFileUploadHandlerPath);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 //
 //		ProfileImageDTO profileImageDTO = ProfileImageDTO.of(profileImageRepository.save(ProfileImage.builder()
-//			.username(profileImageRequestDTO.getUsername())
-//			.uri(uploadedFileInfo.get(localFileUploader.URI_KEY).toString())
+//			.profileId(Long.valueOf(profileImageRequestDTO.getProfileId()))
+//			.uri(domainUri + uploadedFileInfo.get(localFileUploader.URI_KEY).toString())
 //			.originalName(uploadedFileInfo.get(localFileUploader.ORIGINAL_FILE_NAME_KEY).toString())
 //			.name(uploadedFileInfo.get(localFileUploader.CHANGED_FILE_NAME_KEY).toString())
 //			.build()

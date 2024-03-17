@@ -4,6 +4,7 @@ import java.security.Key;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
+import com.name.blog.constants.Retentions;
 import com.name.blog.core.security.Role;
 import com.name.blog.exception.CustomAccessTokenRuntimeException;
 
@@ -20,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class AccessToken implements com.name.blog.core.security.AccessToken {
-    private static final long TOKEN_RETENTION_MINUTES = 20;
     private static final String AUTHORITIES_KEY = "role";
 
     private final DateUtil dateUtil= new DateUtil();
@@ -84,6 +84,6 @@ public class AccessToken implements com.name.blog.core.security.AccessToken {
 
 
     private Date createExpiredDate() {
-        return dateUtil.createUTCDatePlus(TOKEN_RETENTION_MINUTES, ChronoUnit.MINUTES);
+        return dateUtil.createUTCDatePlus(Retentions.ACCESS_TOKEN_MINUTES.getValue(), ChronoUnit.MINUTES);
     }
 }

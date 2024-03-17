@@ -1,15 +1,17 @@
 package com.name.blog.provider.useCase;
 
 import com.name.blog.provider.dto.CommentDTO;
+import com.name.blog.provider.dto.CommentDetailDTO;
 import com.name.blog.web.dto.CommentRequestDTO;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 
 public interface CommentUseCase {
-    @Transactional
-    CommentDTO insertComment(@RequestBody CommentRequestDTO commentRequestDTO);
+    Page<CommentDetailDTO> getCommentDetailListByPostId(Long postId, Integer page);
 
-    @Transactional
+    CommentDTO createComment(@RequestBody CommentRequestDTO commentRequestDTO);
+
     void deleteCommentById(Long id);
 }

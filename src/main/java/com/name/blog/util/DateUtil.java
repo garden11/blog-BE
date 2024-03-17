@@ -36,6 +36,6 @@ public class DateUtil {
         Date nowDate = createUTCDate();
         Long nowAt = convertToEpochSecond(nowDate);
 
-        return nowAt > epochSecond;
+        return nowAt < epochSecond;
     }
 }

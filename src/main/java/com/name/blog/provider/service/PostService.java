@@ -181,7 +181,7 @@ public class PostService implements PostUseCase {
 		Long expiresAt = dateUtil.createEpochSecondPlus(Retentions.POST_IMAGE_DAYS.getValue(), ChronoUnit.DAYS);
 
 		postImageRepository.updateNotUsingByPostId(id, expiresAt);
-		postImageRepository.updateUsingByPostIdAndUriIn(id, postRequestDTO.getImageUriList());
+		postImageRepository.updateUsingByPostIdAndUriIn(id, postRequestDTO.getImageUris());
 		
 		post.updatePost(postRequestDTO);
 

@@ -15,7 +15,7 @@ public class PostRequestDTO {
 	private String createdAt;
 	private String registeredAt;
 	private String updatedAt;
-	private List<String> imageUriList;
+	private List<String> imageUris;
 	
 	public Post toEntity() {
 		return Post.builder()

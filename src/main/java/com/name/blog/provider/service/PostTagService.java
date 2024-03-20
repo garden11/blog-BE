@@ -52,7 +52,7 @@ public class PostTagService implements PostTagUseCase {
         Long postId = postTagListRequestDTO.getPostId();
         List<PostTagInfo> postTagInfoList = postTagInfoRepository.findByPostId(postId);
 
-        List<String> newTagNameList = postTagListRequestDTO.getTagList();
+        List<String> newTagNameList = postTagListRequestDTO.getTags();
 
 
         for(String newTagName : newTagNameList) {

@@ -7,5 +7,5 @@ import java.util.List;
 @Data
 public class PostTagListRequestDTO {
     private Long postId;
-    private List<String> tagList;
+    private List<String> tags;
 }

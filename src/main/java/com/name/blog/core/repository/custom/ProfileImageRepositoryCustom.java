@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface ProfileImageRepositoryCustom {
     Long updateNotUsingByProfileId(Long profileId, Long expiresAt);
-    List<Tuple> findIdAndNameListByIdExpired(Long id);
+    List<Tuple> findExpiredIdAndNameList();
     Long deleteByIdIn(List<Long>idList);
 }

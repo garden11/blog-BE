@@ -23,7 +23,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @Table(name="profile_image")
-@Where(clause = "use_yn='Y'")
 @DynamicInsert
 @DynamicUpdate
 public class ProfileImage {

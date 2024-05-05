@@ -12,6 +12,7 @@ import com.name.blog.web.dto.PostRequestDTO;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -19,6 +20,12 @@ import java.util.Optional;
 @RequestMapping
 public class PostController {
 	private final PostService postService;
+
+	@GetMapping("/api/v1/posts")
+	public List<PostDTO> getPosts() {
+		return postService.getPostList();
+	}
+
 
 	@GetMapping("/api/v1/post/{id}")
 	public Optional<PostDTO> getPostById(@PathVariable("id") Long id) {

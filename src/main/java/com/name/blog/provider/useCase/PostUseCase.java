@@ -7,9 +7,12 @@ import com.name.blog.web.dto.PostRequestDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface PostUseCase {
+    List<PostDTO> getPostList();
+
     Page<PostDetailDTO> getPostDetailList(Integer page);
 
     Page<PostDetailDTO> getPostDetailListByUsername(String username, Integer page);

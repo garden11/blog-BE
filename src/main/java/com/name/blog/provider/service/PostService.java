@@ -49,6 +49,20 @@ public class PostService implements PostUseCase {
 
 	@Override
 	@Transactional
+	public List<PostDTO> getPostList() {
+		List<PostDTO> postDTOList = new ArrayList<>();
+
+		List<Post> postList = postRepository.findValid();
+
+		for(Post post: postList) {
+			postDTOList.add(PostDTO.of(post));
+		}
+
+		return postDTOList;
+	}
+
+	@Override
+	@Transactional
 	public Page<PostDetailDTO> getPostDetailList(Integer page) {
 		List<PostDetailDTO> postDetailDTOList = new ArrayList<>();
 

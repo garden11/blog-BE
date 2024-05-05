@@ -49,14 +49,13 @@ public class PostImageRepositoryImpl implements PostImageRepositoryCustom {
     }
 
     @Override
-    public List<Tuple> findIdAndNameListByIdExpired(Long id) {
+    public List<Tuple> findExpiredIdAndNameList() {
 
         return queryFactory
                  .select(postImage.id, postImage.name)
                  .from(postImage)
                  .where(postImage.expiresAt.isNotNull()
-                        .and(postImage.expiresAt.lt(Expressions.asNumber(System.currentTimeMillis())))
-                        .and(postImage.id.goe(id)))
+                        .and(postImage.expiresAt.lt(Expressions.asNumber(System.currentTimeMillis()))))
                  .fetch();
     }
 

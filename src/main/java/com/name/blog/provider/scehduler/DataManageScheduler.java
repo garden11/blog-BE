@@ -1,18 +1,15 @@
-package com.name.blog.provider.service;
+package com.name.blog.provider.scehduler;
 
 import com.name.blog.core.repository.PostImageRepository;
 import com.name.blog.core.repository.ProfileImageRepository;
 import com.name.blog.exception.ThreadRuntimeException;
-
-// AWS 사용 시 주석 해제
 import com.name.blog.util.S3FileUploader;
-
-import com.name.blog.provider.useCase.DataManageUseCase;
 import com.querydsl.core.Tuple;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -20,7 +17,7 @@ import java.util.concurrent.Executors;
 
 @Service
 @RequiredArgsConstructor
-public class DataManageService implements DataManageUseCase {
+public class DataManageScheduler {
     private final S3FileUploader s3FileUploader;
 
     private final PostImageRepository postImageRepository;
@@ -29,13 +26,13 @@ public class DataManageService implements DataManageUseCase {
     // S3 1회 처리양(최대 1000)
     private final int S3_PROCESS_AMOUNT = 1000;
 
-    @Override
+    @Scheduled(cron = "0 0 4 */3 * *")
     @Transactional
-    public int runDeletingPostImageThreads(Long startId)  {
+    public void runDeletingPostImageThreads()  {
         int processAmount = S3_PROCESS_AMOUNT;
 
         try {
-            List<Tuple> tupleList = postImageRepository.findIdAndNameListByIdExpired(startId);
+            List<Tuple> tupleList = postImageRepository.findExpiredIdAndNameList();
             List<Object[]> idAndNameList = new ArrayList<>();
 
             for (Tuple tuple : tupleList) {
@@ -76,8 +73,6 @@ public class DataManageService implements DataManageUseCase {
                     }
                 }
             }
-
-            return totalCount;
         } catch (InterruptedException error) {
             error.printStackTrace();
 
@@ -85,13 +80,13 @@ public class DataManageService implements DataManageUseCase {
         }
     }
 
-    @Override
+    @Scheduled(cron = "0 0 4 */3 * *")
     @Transactional
-    public int runDeletingProfileImagesThreads(Long startId) {
+    public void runDeletingProfileImagesThreads() {
         int processAmount = S3_PROCESS_AMOUNT;
-
+        
         try {
-            List<Tuple> tupleList = profileImageRepository.findIdAndNameListByIdExpired(startId);
+            List<Tuple> tupleList = profileImageRepository.findExpiredIdAndNameList();
             List<Object[]> idAndNameList = new ArrayList<>();
 
             for (Tuple tuple : tupleList) {
@@ -132,8 +127,6 @@ public class DataManageService implements DataManageUseCase {
                     }
                 }
             }
-
-            return totalCount;
         } catch (InterruptedException error) {
             error.printStackTrace();
 

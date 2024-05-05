@@ -28,14 +28,13 @@ public class ProfileImageRepositoryImpl implements ProfileImageRepositoryCustom 
     }
 
     @Override
-    public List<Tuple> findIdAndNameListByIdExpired(Long id) {
+    public List<Tuple> findExpiredIdAndNameList() {
 
         return queryFactory
                 .select(profileImage.id, profileImage.name)
                 .from(profileImage)
                 .where(profileImage.expiresAt.isNotNull()
-                        .and(profileImage.expiresAt.lt(Expressions.asNumber(System.currentTimeMillis())))
-                        .and(profileImage.id.goe(id)))
+                        .and(profileImage.expiresAt.lt(Expressions.asNumber(System.currentTimeMillis()))))
                 .fetch();
     }
 

@@ -8,6 +8,6 @@ public interface PostImageRepositoryCustom {
     Long updateNotUsingByPostId(Long postId, Long expiresAt);
     Long updateNotUsingByPostIdIn(List<Long> postIdList, Long expiresAt);
     Long updateUsingByPostIdAndUriIn(Long postId, List<String> uriList);
-    List<Tuple> findIdAndNameListByIdExpired(Long Id);
+    List<Tuple> findExpiredIdAndNameList();
     Long deleteByIdIn(List<Long>idList);
 }
